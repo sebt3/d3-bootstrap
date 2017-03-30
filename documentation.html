@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>D3 - Bootstrap</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 90%;
+      margin: auto;
+  }
+
+body {
+  position: relative;
+  line-height: 1.5;
+  font-family: 'Raleway', sans-serif;
+}
+
+.jumbotron {
+  border-radius: 0px;
+  background: #5fb3ce;
+  margin-bottom: 0;
+}
+
+.jumbotron button {
+  margin-top: 10px;
+}
+
+section {
+  padding: 40px 0;
+  border-bottom: 1px solid #c1e1ec;
+}
+
+section:last-child {
+  border-bottom: none;
+}
+
+.scrollspy .nav {
+  background: #4baac8;
+}
+
+.scrollspy .nav a {
+  color: black;
+}
+
+.scrollspy .nav li a:hover,
+.scrollspy .nav li a:focus {
+  background: #86c5da;
+}
+
+.scrollspy .nav .active {
+  font-weight: bold;
+  background: #72bcd4;
+}
+
+.scrollspy .nav .nav {
+  display: none;
+}
+
+.scrollspy .nav .active .nav {
+  display: block;
+}
+
+.scrollspy .nav .nav a {
+  font-weight: normal;
+  font-size: .85em;
+}
+
+.scrollspy .nav .nav span {
+  margin: 0 5px 0 2px;
+}
+
+.scrollspy .nav .nav .active a,
+.scrollspy .nav .nav .active:hover a,
+.scrollspy .nav .nav .active:focus a {
+  font-weight: bold;
+  padding-left: 30px;
+  border-left: 5px solid black;
+}
+
+.scrollspy .nav .nav .active span,
+.scrollspy .nav .nav .active:hover span,
+.scrollspy .nav .nav .active:focus span {
+  display: none;
+}
+
+.affix-top {
+  position: relative;
+}
+
+.affix {
+  top: 20px;
+}
+
+.affix, 
+.affix-bottom {
+    width: 213px;
+}
+
+.affix-bottom {
+  position: absolute;
+}
+
+footer {
+  border-top: 1px solid #c1e1ec;
+  height: 50px;
+}
+
+footer p {
+  line-height: 50px;
+  margin-bottom: 0;
+}
+
+@media (min-width:1200px) {
+  .affix, 
+  .affix-bottom {
+    width: 263px;
+  }
+}
+
+code .nt, code .gp {
+	color:#4baac8;
+}
+code .na {
+	color:#aac84b;
+}
+code .s {
+	color:red;
+}
+code .c {
+	color:#aa4bc8;
+}
+</style>
+  </head>
+<body data-spy="scroll" data-target=".scrollspy">
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Bootstrap for D3</h1>
+      <h3><span class="fa fa-pencil"></span> Complete remplacement of bootstrap.min.js using d3 instead of jQuery.</h3>
+      <h3><span class="fa fa-pencil"></span> Based on bootstrap 3.3.7 and build to work with d3 v4.</h3>
+      <h3><span class="fa fa-pencil"></span> Support all the so-called data-api.</h3>
+      <a href="https://d3js.org" class="btn btn-primary btn-lg">d3</a>
+      <a href="https://getbootstrap.com" class="btn btn-primary btn-lg">bootstrap</a>
+    </div>
+  </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-3 scrollspy">
+        <ul id="nav" class="nav hidden-xs hidden-sm" data-spy="affix">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#download">Download</a></li>
+          <li><a href="#template">Template</a></li>
+          <li><a href="#alerts">Alerts</a></li>
+          <li><a href="#buttons">Buttons</a>
+            <ul class="nav">
+              <li><a href="#modals"><span class="fa fa-angle-double-right"></span>Modals</a></li>
+              <li><a href="#checks"><span class="fa fa-angle-double-right"></span>Check and Radio buttons</a></li>
+              <li><a href="#dropdown"><span class="fa fa-angle-double-right"></span>Dropdown</a></li>
+            </ul>
+          </li>
+          <li><a href="#collapses">Collapses</a>
+            <ul class="nav">
+              <li><a href="#collapse-panels"><span class="fa fa-angle-double-right"></span>Panel collapes</a></li>
+              <li><a href="#accordions"><span class="fa fa-angle-double-right"></span>Accordions</a></li>
+            </ul>
+          </li>
+          <li><a href="#tabs">Tabs</a></li>
+          <li><a href="#tooltips">Tooltips</a></li>
+          <li><a href="#popovers">Popovers</a></li>
+          <li><a href="#carousels">Carousels</a></li>
+          <li><a href="#affix">Affix</a></li>
+          <li><a href="#scrollspy">ScrollSpy</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-9">
+	<section id="overview">
+          <h2><span class="fa fa-edit"></span> Overview</h2>
+          <p>This is a reimplementation of the javascript of <a href="http://getbootstrap.com/">Bootstrap</a> using <a href="https://d3js.org/">d3</a> instead of jQuery</p>
+          <p>It support all the data-api that bootstrap use :</p>
+          <ul>
+           <li><code class="language-html" data-lang="html"><span class="na">data-dismiss=</span><span class="s">"alert"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-dismiss=</span><span class="s">"modal"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"modal"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"dropdown"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"tab"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"pill"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"collapse"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"popover"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"tooltip"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"button"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-slide=</span><span class="s">"..."</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-slide-to=</span><span class="s">"..."</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-ride=</span><span class="s">"carousel"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-spy=</span><span class="s">"affix"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-spy=</span><span class="s">"scroll"</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-parent=</span><span class="s">"#..."</span></code></li>
+           <li><code class="language-html" data-lang="html"><span class="na">data-target=</span><span class="s">"#..."</span></code></li>
+	  </ul>
+	  <p>There's also availble a small "extra" module that allow to create some bootstrap the "d3 way" and there's a limited support for adminLTE javascript too (only what I needed for my project)</p>
+        </section>
+
+	<section id="download">
+          <h2><span class="fa fa-edit"></span> Download</h2>
+          <h3>From gitHub</h3>
+          <p>Follow the <a href="https://github.com/sebt3/d3-bootstrap">link</a>, or :</p>
+          <pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>git clone https://github.com/sebt3/d3-bootstrap.git</code></pre>
+          <h3>Using composer</h3>
+          <pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>composer require sebt3/d3-bootstrap:dev-master</code></pre>
+        </section>
+
+        <section id="template">
+          <h2><span class="fa fa-edit"></span> Template</h2>
+	  <p>Here is a minimum template:</p>
+<pre><code class=language-html data-lang=html><span class=cp>&lt;!DOCTYPE html&gt;</span>
+<span class=nt>&lt;html</span> <span class=na>lang=</span><span class=s>"en"</span><span class=nt>&gt;</span>
+  <span class=nt>&lt;head&gt;</span>
+    <span class=nt>&lt;meta</span> <span class=na>charset=</span><span class=s>"utf-8"</span><span class=nt>&gt;</span>
+    <span class=nt>&lt;meta</span> <span class=na>http-equiv=</span><span class=s>"X-UA-Compatible"</span> <span class=na>content=</span><span class=s>"IE=edge"</span><span class=nt>&gt;</span>
+    <span class=nt>&lt;meta</span> <span class=na>name=</span><span class=s>"viewport"</span> <span class=na>content=</span><span class=s>"width=device-width, initial-scale=1"</span><span class=nt>&gt;</span>
+    <span class=c>&lt;!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags --&gt;</span>
+    <span class=nt>&lt;title&gt;</span>Bootstrap 101 Template<span class=nt>&lt;/title&gt;</span>
+
+    <span class=c>&lt;!-- Bootstrap --&gt;</span>
+    <span class=nt>&lt;link</span> <span class=na>href=</span><span class=s>"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"</span> <span class=na>rel=</span><span class=s>"stylesheet"</span><span class=nt>&gt;</span>
+  <span class=nt>&lt;/head&gt;</span>
+  <span class=nt>&lt;body&gt;</span>
+    <span class=nt>&lt;h1&gt;</span>Hello, world!<span class=nt>&lt;/h1&gt;</span>
+
+    <span class=c>&lt;!-- d3 --&gt;</span>
+    <span class=nt>&lt;script </span><span class=na>src=</span><span class=s>"https://d3js.org/d3.v4.min.js"</span><span class=nt>&gt;&lt;/script&gt;</span>
+    <span class=c>&lt;!-- d3-bootstrap --&gt;</span>
+    <span class=nt>&lt;script </span><span class=na>src=</span><span class=s>"js/d3-bootstrap.js"</span><span class=nt>&gt;&lt;/script&gt;</span>
+  <span class=nt>&lt;/body&gt;</span>
+<span class=nt>&lt;/html&gt;</span></code></pre>
+        </section>
+
+        <section id="alerts">
+          <h2><span class="fa fa-edit"></span> Alerts</h2>
+          <p>Bootstrap use Javascript to allow you to close the "<a href="http://getbootstrap.com/components/#alerts-dismissible">dismissible alerts</a>".</p>
+          <p>The presence of the attribute <code class="language-html" data-lang="html"><span class="na">data-dismiss=</span><span class="s">"alert"</span></code> select the button that will close the alert on click (it doesnt have to be a button actually)</p>
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"alert alert-warning alert-dismissible"</span> <span class="na">role=</span><span class="s">"alert"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"close"</span> <span class="na">data-dismiss=</span><span class="s">"alert"</span> <span class="na">aria-label=</span><span class="s">"Close"</span><span class="nt">&gt;&lt;span</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;</span><span class="ni">&amp;times;</span><span class="nt">&lt;/span&gt;&lt;/button&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Warning!<span class="nt">&lt;/strong&gt;</span> Better check yourself, you're not looking too good.
+<span class="nt">&lt;/div&gt;</span></code></pre>
+<p>will produce :</p>
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+</div>
+<p>Add the classes <code class="language-html" data-lang="html"><span class="s">"in fade"</span></code> to the alert to add a nice fading effect : </p>
+<div class="alert alert-warning alert-dismissible in fade" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+</div>
+        </section>
+
+        <section id="buttons">
+          <h2><span class="fa fa-edit"></span> Buttons</h2>
+          <p>Bootstrap offer a set of features for buttons.</p>
+	  
+          <section id="modals">
+            <h3>Modals</h3>
+            <p><a href="http://getbootstrap.com/javascript/#modals">Modal</a> are opened using a button (can also be a link as long as the the attributes <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"modal"</span></code> and <code class="language-html" data-lang="html"><span class="na">data-target=</span><span class="s">"#..."</span></code> are set)</p>
+            <p>The attribute <code class="language-html" data-lang="html"><span class="na">data-target=</span><span class="s">"#..."</span></code> should match the ID of the modal. The modal's code can be placed anywhere as it's hidden by default and fullscreen otherwise.</p>
+            <p>The modal can be closed by any button (or link) having the attribute <code class="language-html" data-lang="html"><span class="na">data-dismiss=</span><span class="s">"modal"</span></code>.</p>
+            <p>Add the class <code class="language-html" data-lang="html"><span class="s">"fade"</span></code> to the modal to add a nice fading effect</p>
+<pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- Button trigger modal --&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-primary btn-lg"</span> <span class="na">data-toggle=</span><span class="s">"modal"</span> <span class="na">data-target=</span><span class="s">"#myModal"</span><span class="nt">&gt;</span>
+  Launch demo modal
+<span class="nt">&lt;/button&gt;</span>
+
+<span class="c">&lt;!-- Modal --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal fade"</span> <span class="na">id=</span><span class="s">"myModal"</span> <span class="na">tabindex=</span><span class="s">"-1"</span> <span class="na">role=</span><span class="s">"dialog"</span> <span class="na">aria-labelledby=</span><span class="s">"myModalLabel"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-dialog"</span> <span class="na">role=</span><span class="s">"document"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-content"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-header"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"close"</span> <span class="na">data-dismiss=</span><span class="s">"modal"</span> <span class="na">aria-label=</span><span class="s">"Close"</span><span class="nt">&gt;&lt;span</span> <span class="na">aria-hidden=</span><span class="s">"true"</span><span class="nt">&gt;</span><span class="ni">&amp;times;</span><span class="nt">&lt;/span&gt;&lt;/button&gt;</span>
+        <span class="nt">&lt;h4</span> <span class="na">class=</span><span class="s">"modal-title"</span> <span class="na">id=</span><span class="s">"myModalLabel"</span><span class="nt">&gt;</span>Modal title<span class="nt">&lt;/h4&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-body"</span><span class="nt">&gt;</span>
+        ...
+      <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-footer"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-default"</span> <span class="na">data-dismiss=</span><span class="s">"modal"</span><span class="nt">&gt;</span>Close<span class="nt">&lt;/button&gt;</span>
+        <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span><span class="nt">&gt;</span>Save changes<span class="nt">&lt;/button&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+		Launch demo modal
+		</button>
+          </section>
+
+          <section id="checks">
+            <h3>Check and Radio buttons</h3>
+            <p><a href="http://getbootstrap.com/javascript/#buttons-checkbox-radio">Checkbox and radio buttons</a> have to be contained in a <code class="language-html" data-lang="html"><span class="na">class=</span><span class="s">"btn-group"</span></code> div that also have this attribute set <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"buttons"</span></code></p>
+
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"btn-group"</span> <span class="na">data-toggle=</span><span class="s">"buttons"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;label</span> <span class="na">class=</span><span class="s">"btn btn-primary active"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"radio"</span> <span class="na">name=</span><span class="s">"options"</span> <span class="na">id=</span><span class="s">"option1"</span> <span class="na">autocomplete=</span><span class="s">"off"</span> <span class="na">checked</span><span class="nt">&gt;</span> Radio 1 (preselected)
+  <span class="nt">&lt;/label&gt;</span>
+  <span class="nt">&lt;label</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"radio"</span> <span class="na">name=</span><span class="s">"options"</span> <span class="na">id=</span><span class="s">"option2"</span> <span class="na">autocomplete=</span><span class="s">"off"</span><span class="nt">&gt;</span> Radio 2
+  <span class="nt">&lt;/label&gt;</span>
+  <span class="nt">&lt;label</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"radio"</span> <span class="na">name=</span><span class="s">"options"</span> <span class="na">id=</span><span class="s">"option3"</span> <span class="na">autocomplete=</span><span class="s">"off"</span><span class="nt">&gt;</span> Radio 3
+  <span class="nt">&lt;/label&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary active">
+    <input type="radio" name="options" id="option1" autocomplete="off" checked> Radio 1 (preselected)
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" name="options" id="option2" autocomplete="off"> Radio 2
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" name="options" id="option3" autocomplete="off"> Radio 3
+  </label>
+</div>
+	  </section>
+
+          <section id="dropdown">
+            <h3>Dropdown</h3>
+            <p><a href="http://getbootstrap.com/components/#btn-dropdowns">Dropdown</a> should have <code class="language-html" data-lang="html"><span class="na">class=</span><span class="s">"btn-group dropdown"</span></code>(yes additionnaly to what bootstrap requiere, a "dropdown" class has to be added with d3-bootstrap).</p>
+            <p>Opening the dropdown is triggered by the attribute <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"dropdown"</span></code></p>
+<pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- Single button --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"btn-group dropdown"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-default dropdown-toggle"</span> <span class="na">data-toggle=</span><span class="s">"dropdown"</span> <span class="na">aria-haspopup=</span><span class="s">"true"</span> <span class="na">aria-expanded=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+    Action <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"caret"</span><span class="nt">&gt;&lt;/span&gt;</span>
+  <span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"dropdown-menu"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Action<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Another action<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Something else here<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">"separator"</span> <span class="na">class=</span><span class="s">"divider"</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Separated link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+	  <div class="btn-group dropdown">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		  Dropdown
+		  <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+		<li><a href="#">Action</a></li>
+		<li><a href="#">Another action</a></li>
+		<li><a href="#">Something else here</a></li>
+		<li role="separator" class="divider"></li>
+		<li><a href="#">Separated link</a></li>
+		</ul>
+	    </div>
+          </section>
+        </section>
+
+        <section id="collapses">
+          <h2><span class="fa fa-edit"></span> Collapses</h2>
+          <p><a href="http://getbootstrap.com/javascript/#collapse">Collapses</a> are objects that can hide part of their content. It can go from the very simple example bellow to accordions.</p>
+          <p>The button (or link) that trigger the collapsed content have to be identified by the attribute <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"collapse"</span></code> and identify the target using <code class="language-html" data-lang="html"><span class="na">data-target=</span><span class="s">"#..."</span></code> or <code class="language-html" data-lang="html"><span class="na">href=</span><span class="s">"#..."</span></code>.</p>
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span> <span class="na">role=</span><span class="s">"button"</span> <span class="na">data-toggle=</span><span class="s">"collapse"</span> <span class="na">href=</span><span class="s">"#collapseExample"</span> <span class="na">aria-expanded=</span><span class="s">"false"</span> <span class="na">aria-controls=</span><span class="s">"collapseExample"</span><span class="nt">&gt;</span>
+  Link with href
+<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">data-toggle=</span><span class="s">"collapse"</span> <span class="na">data-target=</span><span class="s">"#collapseExample"</span> <span class="na">aria-expanded=</span><span class="s">"false"</span> <span class="na">aria-controls=</span><span class="s">"collapseExample"</span><span class="nt">&gt;</span>
+  Button with data-target
+<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"collapse"</span> <span class="na">id=</span><span class="s">"collapseExample"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"well"</span><span class="nt">&gt;</span>
+    ...
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  Link with href
+</a>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  Button with data-target
+</button>
+<div class="collapse" id="collapseExample">
+  <div class="well">
+    ...
+  </div>
+</div>
+          <section id="collapse-panels">
+            <h3>Panels</h3>
+            The same strategy can be used on many things. Panels are a good example :
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-group"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel panel-default"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-heading"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h4</span> <span class="na">class=</span><span class="s">"panel-title"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">data-toggle=</span><span class="s">"#collapse1"</span> <span class="na">href=</span><span class="s">"#collapse1"</span><span class="nt">&gt;</span>
+          Collapsed list group
+        <span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/h4&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"collapse1"</span> <span class="na">class=</span><span class="s">"panel-collapse collapse"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"list-group"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"list-group-item"</span><span class="nt">&gt;</span>One<span class="nt">&lt;/li</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"list-group-item"</span><span class="nt">&gt;</span>Two<span class="nt">&lt;/li</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"list-group-item"</span><span class="nt">&gt;</span>Three<span class="nt">&lt;/li</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;/ul</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-footer"</span><span class="nt">&gt;</span>Footer<span class="nt">&lt;/div</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+	    <div class="panel-group">
+	     <div class="panel panel-default">
+	      <div class="panel-heading">
+		<h4 class="panel-title">
+		<a data-toggle="collapse" href="#collapse1">Collapsed list group</a>
+		</h4>
+	      </div>
+	      <div id="collapse1" class="panel-collapse collapse">
+		<ul class="list-group">
+		<li class="list-group-item">One</li>
+		<li class="list-group-item">Two</li>
+		<li class="list-group-item">Three</li>
+		</ul>
+		<div class="panel-footer">Footer</div>
+	      </div>
+	     </div>
+	    </div>
+          </section>
+
+          <section id="accordions">
+            <h3>Accordions</h3>
+            <p>And this is a demo of accordion. If you want to see it's code, go have a look in the bootstrap <a href="http://getbootstrap.com/javascript/#collapse-example-accordion">documentation</a>.</p>
+            <p>Please note that accordions use an extra tag : <code class="language-html" data-lang="html"><span class="na">data-parent=</span><span class="s">"#..."</span></code> to identify the accordion as a whole.</p>
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">1. What is HTML?</a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>HTML stands for HyperText Markup Language. HTML is the main markup language for describing the structure of Web pages. <a href="http://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">2. What is Bootstrap?</a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>Bootstrap is a powerful front-end framework for faster and easier web development. It is a collection of CSS and HTML conventions. <a href="http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">3. What is CSS?</a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+          </section>
+        </section>
+
+        <section id="tabs">
+          <h2><span class="fa fa-edit"></span> Tabs</h2>
+          <p><a href="http://getbootstrap.com/javascript/#tabs">Tabs</a> and <a href="http://getbootstrap.com/components/#nav-pills">pills</a> work exactly the same way. Beside the class, you'll need to add the attribute <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"tab"</span></code> and a way to identify the target tab-content to open using either <code class="language-html" data-lang="html"><span class="na">data-target=</span><span class="s">"#..."</span></code> or <code class="language-html" data-lang="html"><span class="na">href=</span><span class="s">"#..."</span></code>.</p>
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"nav nav-tabs"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">"presentation"</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;&lt;a</span> <span class="na">data-toggle=</span><span class="s">"tab"</span> <span class="na">href=</span><span class="s">"#home"</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">"presentation"</span><span class="nt">&gt;&lt;a</span> <span class="na">data-toggle=</span><span class="s">"tab"</span> <span class="na">href=</span><span class="s">"#menu1"</span><span class="nt">&gt;</span>Menu 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">"presentation"</span><span class="nt">&gt;&lt;a</span> <span class="na">data-toggle=</span><span class="s">"tab"</span> <span class="na">href=</span><span class="s">"#menu2"</span><span class="nt">&gt;</span>Menu 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"tab-content"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"home"</span> <span class="na">class=</span><span class="s">"tab-pane fade in active"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>Home<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Some content.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"menu1"</span> <span class="na">class=</span><span class="s">"tab-pane fade"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>Menu 1<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Some content in menu 1.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"menu2"</span> <span class="na">class=</span><span class="s">"tab-pane fade"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>Menu 2<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Some content in menu 2.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+		<ul class="nav nav-tabs">
+		  <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+		  <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+		  <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+		</ul>
+		<div class="tab-content">
+		 <div id="home" class="tab-pane fade in active">
+		  <h3>HOME</h3>
+		  <p>Some content.</p>
+		 </div>
+		 <div id="menu1" class="tab-pane fade">
+		  <h3>Menu 1</h3>
+		  <p>Some content in menu 1.</p>
+		 </div>
+		 <div id="menu2" class="tab-pane fade">
+		  <h3>Menu 2</h3>
+		  <p>Some content in menu 2.</p>
+		 </div>
+		</div>
+        </section>
+
+        <section id="tooltips">
+          <h2><span class="fa fa-edit"></span> Tooltips</h2>
+          <p>Bootstrap <a href="http://getbootstrap.com/javascript/#tooltips">tooltips</a> overwrite the default browser tooltips.</p>
+          <p>To activate the bootstrap tooltip on a link (or else), you need to add the attribute <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"tooltip"</span></code>. The attribute <code class="language-html" data-lang="html"><span class="na">title</span></code> will be used as content (just like with regular tooltips). Optionnaly you can choose the placement using <code class="language-html" data-lang="html"><span class="na">data-placement=</span><span class="s">"left"</span></code>, value supported are : top, bottom, left, right.</p>
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">data-toggle=</span><span class="s">"tooltip"</span> <span class="na">title=</span><span class="s">"Hooray!"</span> <span class="na">data-placement=</span><span class="s">"left"</span><span class="nt">&gt;</span>this link has a tooltip on the left<span class="nt">&lt;/a&gt;</span></code></pre>
+          <a href="#" data-toggle="tooltip" title="Hooray!" data-placement="left" >this link has a tooltip on the left</a>
+        </section>
+
+        <section id="popovers">
+          <h2><span class="fa fa-edit"></span> Popovers</h2>
+          <p><a href="">Popovers</a> are a bit like tooltips but are activated on click. Thuss no link will be followed.</p>
+          <p>You need to add the attribute <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"popover"</span></code> to activate popovers. It also support the <code class="language-html" data-lang="html"><span class="na">data-placement</span></code> attribute. Additionnaly to the title, a popover body have to be declared in the attribute <code class="language-html" data-lang="html"><span class="na">data-content=</span><span class="s">"..."</span></code>.</p>
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">data-toggle=</span><span class="s">"popover"</span> <span class="na">data-placement=</span><span class="s">"right"</span> <span class="na">title=</span><span class="s">"Popover Header"</span> <span class="na">data-content=</span><span class="s">"Some content inside the popover"</span><span class="nt">&gt;</span>Toggle popover there -><span class="nt">&lt;/a&gt;</span></code></pre>
+          <a href="#" data-toggle="popover" data-placement="right" title="Popover Header" data-content="Some content inside the popover">Toggle popover there -></a><br/><br/>
+
+        </section>
+
+        <section id="carousels">
+          <h2><span class="fa fa-edit"></span> Carousels</h2>
+          <p><a href="http://getbootstrap.com/javascript/#carousel">Carrousel</a> behave just like with regular bootstrap.</p>
+          <p>Bellow is the example from <a href="https://www.w3schools.com/bootstrap/bootstrap_carousel.asp">W3schools</a></p>
+          <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+    <li data-target="#myCarousel" data-slide-to="3"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="https://www.w3schools.com/bootstrap/img_chania.jpg" alt="Chania">
+    </div>
+
+    <div class="item">
+      <img src="https://www.w3schools.com/bootstrap/img_chania2.jpg" alt="Chania">
+    </div>
+
+    <div class="item">
+      <img src="https://www.w3schools.com/bootstrap/img_flower.jpg" alt="Flower">
+    </div>
+
+    <div class="item">
+      <img src="https://www.w3schools.com/bootstrap/img_flower2.jpg" alt="Flower">
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+        </section>
+
+        <section id="affix">
+          <h2><span class="fa fa-edit"></span> Affix</h2>
+          <p><a href="http://getbootstrap.com/javascript/#affix">Affix</a> are object that keep on screen. The menu of this page is an affix. But unlike what you can usually do using plain css, affix can be fixed for only a portion of the document.</p>
+          <p>Affix are activated using the attribute <code class="language-html" data-lang="html"><span class="na">data-spy=</span><span class="s">"affix"</span></code>.</p>
+          <p>The most top position an affix can have is the position it is given initially. The most bottom allowed position to an affix can also be set using the attribute <code class="language-html" data-lang="html"><span class="na">data-affix-end=</span><span class="s">"#..."</span></code> to identify a DOM element which position will be used as maximum.</p>
+          <p>The "affixed" element will be switched between these 3 classes : <code class="language-html" data-lang="html"><span class="s">"affix-top"</span></code>, <code class="language-html" data-lang="html"><span class="s">"affix"</span></code> and <code class="language-html" data-lang="html"><span class="s">"affix-bottom"</span></code>. Customize accordingly.</p>
+          <p>These are the elements within this document used for the affix :</p>
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"nav"</span> <span class="na">data-spy=</span><span class="s">"affix"</span><span class="nt">&gt;</span>
+<span class=c>&lt;!-- Affixed content --&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+...
+<span class="nt">&lt;section</span> <span class="na">data-affix-end=</span><span class="s">"#nav"</span><span class="nt">&gt;</span>
+<span class=c>&lt;!-- item that mark the end of the affix position --&gt;</span>
+<span class="nt">&lt;/section&gt;</span></code></pre>
+	</section>
+
+        <section id="scrollspy">
+          <h2><span class="fa fa-edit"></span> ScrollSpy</h2>
+          <p>Usually <a href="http://getbootstrap.com/javascript/#scrollspy">ScrollSpy</a> are put inside an affix. This document is no exeption. A scrollSpy track the scroling position to identify what's on screen and activate (setting <code class="language-html" data-lang="html"><span class="na">class=</span><span class="s">"active"</span></code>) the menu item inside the scrollSpy.</p>
+          <p>d3-bootstrap add a scrolling effect on click on the nav items(using d3 transition).</p>
+          <p>Here is what's used within this document : </p>
+<pre><code class="language-html" data-lang="html"><span class="nt">&lt;body</span> <span class="na">data-spy=</span><span class="s">"scroll"</span> <span class="na">data-target=</span><span class="s">".scrollspy"</span><span class="nt">&gt;</span>
+ ...
+ <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-md-3 scrollspy"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"nav"</span>&gt;</span>
+   <span class="nt">&lt;li&gt;</span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#overview"</span><span class="nt">&gt;</span>Overview<span class="nt">&lt;/a&gt;</span><span class="nt">&lt;/li&gt;</span>
+   <span class="nt">&lt;li&gt;</span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#download"</span><span class="nt">&gt;</span>Overview<span class="nt">&lt;/a&gt;</span><span class="nt">&lt;/li&gt;</span>
+   <span class="nt">&lt;li&gt;</span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#template"</span><span class="nt">&gt;</span>Overview<span class="nt">&lt;/a&gt;</span><span class="nt">&lt;/li&gt;</span>
+   ...
+  <span class="nt">&lt;/ul&gt;</span>
+ <span class="nt">&lt;/div&gt;</span>
+...
+ <span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">"#overview"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span> Overview<span class="nt">&lt;/h2&gt;</span>
+ ...
+ <span class="nt">&lt;/section&gt;</span>
+...
+ <span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">"#download"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span> Download<span class="nt">&lt;/h2&gt;</span>
+ ...
+ <span class="nt">&lt;/section&gt;</span>
+...
+ <span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">"#template"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span> Template<span class="nt">&lt;/h2&gt;</span>
+ ...
+ <span class="nt">&lt;/section&gt;</span>
+ ...</code></pre>
+        </section>
+<!--
+<body data-spy="scroll" data-target=".scrollspy">
+      <div class="col-md-3 scrollspy">
+        <ul id="nav" class="nav hidden-xs hidden-sm" data-spy="affix">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#download">Download</a></li>
+          <li><a href="#template">Template</a></li>
+          <li><a href="#alerts">Alerts</a></li>
+          <li><a href="#buttons">Buttons</a>
+            <ul class="nav">
+              <li><a href="#modals"><span class="fa fa-angle-double-right"></span>Modals</a></li>
+              <li><a href="#checks"><span class="fa fa-angle-double-right"></span>Check and Radio buttons</a></li>
+              <li><a href="#dropdown"><span class="fa fa-angle-double-right"></span>Dropdown</a></li>
+            </ul>
+          </li>
+          <li><a href="#collapses">Collapses</a>
+            <ul class="nav">
+              <li><a href="#collapse-panels"><span class="fa fa-angle-double-right"></span>Panel collapes</a></li>
+              <li><a href="#accordions"><span class="fa fa-angle-double-right"></span>Accordions</a></li>
+            </ul>
+          </li>
+          <li><a href="#tabs">Tabs</a></li>
+          <li><a href="#tooltips">Tooltips</a></li>
+          <li><a href="#popovers">Popovers</a></li>
+          <li><a href="#carousels">Carousels</a></li>
+          <li><a href="#affix">Affix</a></li>
+          <li><a href="#scrollspy">ScrollSpy</a></li>
+        </ul>
+      </div>
+-->
+
+
+    </div>
+  </div>
+  
+  <section class="application" data-affix-end="#nav">
+    <div class="container">
+      <h2>Demo of the affix-end ability</h2>
+      <div class="row">
+        <div class="col-sm-8">
+          <div align="center"><img class="img-responsive" src="http://placehold.it/500x300/5fb3ce/000000"></div>
+        </div>
+        <div class="col-sm-4">
+          <p>A space filler to allow you see the "affix-bottom" position for this document affix.</p>
+          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean
+            massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec
+            quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.
+            Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 0.2.0
+    </div>
+    <strong>Copyright &copy; 2017 <a href="https://github.com/sebt3">Sébastien Huss</a>.</strong>
+  </footer>
+<!-- -->
+<script src="vendor/d3.v4.min.js"></script>
+<script src="dist/d3-bootstrap.min.js"></script>
+<!-- -->
+
+<!-- To test with original jQuery plugins ->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+$('#nav').affix({
+    offset: {
+      top: $('#nav').offset().top,
+      bottom: ($('footer').outerHeight(true) + $('.application').outerHeight(true)) + 40
+    }
+});
+console.log({
+      top: $('#nav').offset().top,
+      bottom: ($('footer').outerHeight(true) + $('.application').outerHeight(true)) + 40
+    })
+</script>
+<!-- -->
+
+</body>
+</html>

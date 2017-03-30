@@ -18,7 +18,10 @@
 	adminlte.api.layout.activate	= function() {
 		d3.select('body, html, .wrapper').style('height', 'auto');
 		d3.select('.layout-boxed > .wrapper').style('overflow', 'hidden');
-		
+		// TODO: improve this "if"
+		if (document.body.getBoundingClientRect().height<window.innerHeight) {
+			d3.select('.content-wrapper').style('height', (window.innerHeight-parseInt(d3.select('.main-header').style('height'),10)-parseInt(d3.select('.main-footer').style('height'),10))+'px')
+		}
 		var footer = parseInt(d3.select('.main-footer').style('height'),10)		
 		if (d3.select('body').classed('fixed')) {
 			d3.select('.content-wrapper, .right-side').style('min-height', window.innerHeight - footer);
