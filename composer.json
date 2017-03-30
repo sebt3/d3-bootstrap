@@ -1,6 +1,18 @@
 {
     "name": "sebt3/d3-bootstrap",
     "description": "d3 friendly version of bootstrap javascript tools",
+  "keywords": [
+    "bootstrap",
+    "js",
+    "d3"
+  ],
+  "homepage": "https://sebt3.github.io/d3-bootstrap/documentation.html",
+  "authors": [
+    {
+      "name": "Sébastien Huss",
+      "email": "sebastien.huss@gmail.com"
+    } ],
+  "license": "BSD",
     "require": {
     }
 }
