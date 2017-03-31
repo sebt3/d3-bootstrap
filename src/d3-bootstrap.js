@@ -63,9 +63,10 @@
 	bs.api = bs.api || {
 		find:{}, 	alert:{},	modal:{},	button:{},
 		dropdown:{},	tab:{},		tooltip:{},	carousel:{},
-		affix:{},	scroll:{},	collapse:{},
+		affix:{},	scroll:{},	collapse:{},	format:{},
 		transitionEvent: whichTransitionEvent()
 	}
+	bs.api.format.number = d3.format(",." + d3.precisionFixed(0.01) + "f");
 	bs.api.cumulativeOffset	= function(element) {
 		var top = 0, left = 0;
 		do {

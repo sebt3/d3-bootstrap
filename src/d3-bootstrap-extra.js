@@ -189,7 +189,7 @@ bs.descTable = function () {
 			if (typeof d.url != 'undefined' && d.url != null)
 				x = x.append('a').attr('href', d.url)
 			if (typeof d.right == 'number')
-				x.html(wdNumberFormat(d.right))
+				x.html(bs.api.format.number(d.right))
 			else
 				x.html(d.right)
 		});
@@ -291,7 +291,7 @@ bs.dropdown = function() {
 	chart.icon	= function(t) {icon = t;return chart;};
 	chart.text	= function(t) {text = t;return chart;};
 	chart.init	= function() {
-		var div = d3.select(this).append('div').attr('class','btn-group'),
+		var div = d3.select(this).append('div').attr('class','btn-group dropdown'),
 		    b = div.append('button').attr('class', 'btn '+cl+' dropdown-toggle').attr('data-toggle','dropdown'),
 		    u = div.append('ul').attr('class','dropdown-menu');
 		b.append('span').html(text+' ')
@@ -372,7 +372,7 @@ bs.modalDelete = function() {
 	chart.text	= function(t) {text = t;return chart;};
 	chart.body	= function(t) {body = t;return chart;};
 	chart.init	= function() {
-		var r = d3.select(this).call(wdModal().class('modal-warning').id(id) .title(title).body(body).footer(wdModalSubmit().url(url).text(text)))
+		var r = d3.select(this).call(bs.modal().class('modal-warning').id(id) .title(title).body(body).footer(bs.button.submit().url(url).text(text)))
 	}
 	return chart;
 }
