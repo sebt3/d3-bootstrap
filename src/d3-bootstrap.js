@@ -268,8 +268,6 @@
 				m.classed('collapsed', true).attr('aria-expended','false')
 				t.attr('aria-expended', 'false').classed('collapsing', true).classed('collapse', false).classed('in', false);
 				t.on(bs.api.transitionEvent, function() {hide2(t)}).style(dim, '1px') 
-				//
-				
 			},
 			show2  = function() {
 				target.classed('collapsing',false).classed('collapse',true).classed('in',true);

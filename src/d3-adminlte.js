@@ -97,25 +97,16 @@
 		if (!o)
 			d3.select(parent).classed('active', true)
 	}
-	// bow widget collapse | TODO: animate
+	// bow widget collapse
 	adminlte.api.box.collapse	= function() {
-		var me	= d3.select(this)
-		    b = bs.api.find.classedParent(this, 'box')
-		if(b==null) return;
-		if (d3.event) d3.event.preventDefault();
-		var box  = d3.select(b),
-		    head = box.select('.box-header')
-		if(box.classed('collapsed-box')) {
-			var b = box.node().innerHeight;
-			box.classed('collapsed-box',false)/*.transition().duration(500).style('height', b+'px')
-			me.select('.fa-plus').classed('fa-minus',true).classed('fa-plus',false)*/
-		} else {
-			/*var b = box.style('height');
-			box.transition().duration(500).style('height', head.style('height')).on('end', function() {*/
-				box.classed('collapsed-box',true)/*.style('height', null);
-			})*/
+		var	me	= d3.select(this),
+			target	= bs.api.find.target(this, 'collapse'),
+			active	= target.classed('in');
+		bs.api.collapse.click.call(this);
+		if (active)
 			me.select('.fa-minus').classed('fa-minus',false).classed('fa-plus',true)
-		}
+		else
+			me.select('.fa-plus').classed('fa-plus',false).classed('fa-minus',true)
 	}
 	// enabling data-api on load
 	d3.select(window)					.on('load.adminlte.data-api',			function() {
@@ -129,8 +120,8 @@
 		d3.selectAll('[data-widget="collapse"]')	.on('click.adminlte.box.collapse.data-api',	adminlte.api.box.collapse);
 		d3.selectAll('.sidebar li a').each(function() {
 			var me	= d3.select(this),
-			    url	= me.attr('href')
-			if (url!='#'&&url!='') return true;
+			    url	= me.attr('href');
+			if (url!='' && url.substr(0,1) != '#') return true;
 			d3.select(this)				.on('click.adminlte.bars.left.data-api',	adminlte.api.bars.left.treeClick);
 		})
 	});
