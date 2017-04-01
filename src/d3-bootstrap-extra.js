@@ -9,7 +9,8 @@
 	
 	factory(global.bs, global);
 })(this, (function(bs, global) {
-
+var boxCnt = 0;
+	
 bs.p	= function(ptext) {
 	var text=ptext;
 	function chart(s) { s.each(chart.init); return chart; }
@@ -20,7 +21,7 @@ bs.p	= function(ptext) {
 	return chart;
 }
 bs.box	= function() {
-	var title, body, footer, cl="box-default", tools = [];
+	var title, body, footer, cl="box-default", tools = [], id = "bsBox-"+(++boxCnt);
 	function chart(s) { s.each(chart.init); return chart; }
 	chart.title	= function(t) {title = t;return chart;};
 	chart.tool	= function(t) {tools.push(t);return chart;};
@@ -40,12 +41,15 @@ bs.box	= function() {
 					return;
 				}
 				var btn = d3.select(this).append('button').attr('type', 'button').attr('class','btn btn-box-tool');
-				if (typeof d.action != 'undefined')
+				if (typeof d.action != 'undefined' && d.action == 'collapse')
+					btn.attr('data-toggle', d.action).attr('data-target','#'+id);
+				else if (typeof d.action != 'undefined')
 					btn.attr('data-widget', d.action)
 				if (typeof d.icon != 'undefined')
 					btn.append('i').attr('class', d.icon)
 			});
 		}
+		root	= root.append('div').attr('class', 'collapse in').attr('id',id);
 		var bod = root.append('div').attr('class', 'box-body');
 		if (typeof body != 'undefined')
 			bod.call(body)

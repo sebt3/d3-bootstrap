@@ -253,7 +253,7 @@
 			parent = bs.api.find.dataParent(this)
 			active = target.classed('in'),
 			hide2  = function(t) {
-				d3.select(t).classed('collapsing',false).classed('collapse',true).style(dim, '');
+				t.classed('collapsing',false).classed('collapse',true).style(dim, '');
 			},
 			hide   = function() {
 				var m = me,
@@ -261,14 +261,13 @@
 				if (parent!=null) {
 					m = parent.selectAll('[data-toggle="collapse"]');
 					t = parent.selectAll('.collapse.in');
-					parent.selectAll('.collapsing').classed('collapsing',false).classed('collapse',true)
 				}
 				if(t.size()<1)
 					return
+				t.style(dim, t.node()[sc]+"px").node().offsetWidth;
 				m.classed('collapsed', true).attr('aria-expended','false')
 				t.attr('aria-expended', 'false').classed('collapsing', true).classed('collapse', false).classed('in', false);
-				t.node().offsetWidth;
-				t.on(bs.api.transitionEvent, function() {hide2(this)}).style(dim, '1px') 
+				t.on(bs.api.transitionEvent, function() {hide2(t)}).style(dim, '1px') 
 				//
 				
 			},
@@ -285,6 +284,8 @@
 				target.on(bs.api.transitionEvent, function() {show2()}).style(dim, target.node()[sc]+"px") 
 			};
 		if (target.classed('collapsing'))
+			return
+		if (parent!=null && parent.selectAll('.collapsing').size()>0)
 			return
 		if (active)
 			hide()
@@ -450,7 +451,7 @@
 	bs.api.scroll.linkClick	= function() {
 		if (d3.event) d3.event.preventDefault();
 		var target = bs.api.find.target(this, null)
-		d3.transition().delay(500).duration(1500)
+		d3.transition().duration(1500)
 			.tween("scroll", scrollTween(bs.api.cumulativeOffset(target.node()).top));
 	}
 	bs.api.scroll.scroll	= function(container, id) {
