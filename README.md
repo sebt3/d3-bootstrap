@@ -11,4 +11,7 @@ This project depend on the following projects :
 [Documentation](https://sebt3.github.io/d3-bootstrap/documentation.html).
 
 ## Current status
-Operationnal for all the data-api bootstrap use.
+Production ready. Feature :
+* Support for all data-api
+* Support for (most) custom events triggers
+

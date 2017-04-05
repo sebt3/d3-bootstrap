@@ -121,18 +121,24 @@ footer p {
   }
 }
 
-code .nt, code .gp {
+code .nt, code .gp, code .p {
 	color:#4baac8;
 }
-code .na {
+code .na, code .nx {
 	color:#aac84b;
 }
-code .s {
+code .s, code .s1 {
 	color:red;
 }
-code .c {
+code .c, code .c1 {
 	color:#aa4bc8;
 }
+
+code .kd {
+	color:blue;
+}
+
+
 </style>
   </head>
 <body data-spy="scroll" data-target=".scrollspy">
@@ -276,6 +282,16 @@ code .c {
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <strong>Warning!</strong> Better check yourself, you're not looking too good.
 </div>
+
+<h4 id="alerts-events">Custom events</h4>
+<p>All alert events are fired on the alert itself (i.e. at the <code>&lt;div class="alert"&gt;</code>)</p>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody> 
+<tr> <td>close.bs.alert</td> <td>This event fires immediately when the <code>close</code> instance method is called.</td> </tr>
+<tr> <td>closed.bs.alert</td> <td>This event is fired when the alert has been closed (will wait for CSS transitions to complete).</td> </tr>
+</tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'.alert.alert-warning.fade'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'closed.bs.alert'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span></code></pre>
         </section>
 
         <section id="buttons">
@@ -314,6 +330,17 @@ code .c {
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
 		Launch demo modal
 		</button>
+<h4 id="modals-events">Custom events</h4>
+<p>All modal events are fired at the modal itself (i.e. at the <code>&lt;div class="modal"&gt;</code>).</p>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>show.bs.modal</td> <td>This event fires immediately when the "show" event start.</td> </tr>
+<tr> <td>shown.bs.modal</td> <td>This event is fired when the modal has been made visible to the user (will wait for CSS transitions to complete). </td> </tr>
+<tr> <td>hide.bs.modal</td> <td>This event is fired immediately when the <code>hide</code> instance method has been called.</td> </tr>
+<tr> <td>hidden.bs.modal</td> <td>This event is fired when the modal has finished being hidden from the user (will wait for CSS transitions to complete).</td> </tr>
+</tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#myModal'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'hidden.bs.modal'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something...</span>
+<span class="p">})</span></code></pre>
           </section>
 
           <section id="checks">
@@ -374,6 +401,19 @@ code .c {
 		<li><a href="#">Separated link</a></li>
 		</ul>
 	    </div>
+
+<h4 id="dropdowns-events">Custom events</h4>
+<p>All dropdown events are fired on the <code class="language-html" data-lang="html"><span class="na">class=</span><span class="s">"btn-group dropdown"</span></code> element.</p>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>show.bs.dropdown</td> <td>This event fires immediately when the show instance method is called.</td> </tr>
+<tr> <td>shown.bs.dropdown</td> <td>This event is fired when the dropdown has been made visible to the user (will wait for CSS transitions, to complete).</td> </tr>
+<tr> <td>hide.bs.dropdown</td> <td>This event is fired immediately when the hide instance method has been called.</td> </tr>
+<tr> <td>hidden.bs.dropdown</td> <td>This event is fired when the dropdown has finished being hidden from the user (will wait for CSS transitions, to complete).</td> </tr>
+</tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'.btn-group.dropdown'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'show.bs.dropdown'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span></code></pre>
+
           </section>
         </section>
 
@@ -403,6 +443,19 @@ code .c {
     ...
   </div>
 </div>
+
+<h4 id="collapse-events">Custom events</h4>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>show.bs.collapse</td> <td>This event fires immediately when the <code>show</code> instance method is called.</td> </tr>
+<tr> <td>shown.bs.collapse</td> <td>This event is fired when a collapse element has been made visible to the user (will wait for CSS transitions to complete).</td> </tr>
+<tr> <td>hide.bs.collapse</td> <td> This event is fired immediately when the <code>hide</code> method has been called. </td> </tr>
+<tr> <td>hidden.bs.collapse</td> <td>This event is fired when a collapse element has been hidden from the user (will wait for CSS transitions to complete).</td> </tr>
+</tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#collapseExample'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'hidden.bs.collapse'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span>
+</code></pre>
+
           <section id="collapse-panels">
             <h3>Panels</h3>
             The same strategy can be used on many things. Panels are a good example :
@@ -531,6 +584,18 @@ code .c {
 		  <p>Some content in menu 2.</p>
 		 </div>
 		</div>
+
+<h4 id="tabs-events">Custom events</h3>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>show.bs.tab</td> <td>This event fires on tab show, but before the new tab has been shown.</td> </tr>
+<tr> <td>shown.bs.tab</td> <td>This event fires on tab show after a tab has been shown.</td> </tr> 
+<tr> <td>hide.bs.tab</td> <td>This event fires when a new tab is to be shown (and thus the previous active tab is to be hidden).</td> </tr> 
+<tr> <td>hidden.bs.tab</td> <td>This event fires after a new tab is shown (and thus the previous active tab is hidden). </td> </tr>
+</tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'a[data-toggle="tab"]'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'shown.bs.tab'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">this</span> <span class="c1">// displayed tab</span>
+<span class="p">})</span></code></pre>
+
         </section>
 
         <section id="tooltips">
@@ -539,6 +604,19 @@ code .c {
           <p>To activate the bootstrap tooltip on a link (or else), you need to add the attribute <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"tooltip"</span></code>. The attribute <code class="language-html" data-lang="html"><span class="na">title</span></code> will be used as content (just like with regular tooltips). Optionnaly you can choose the placement using <code class="language-html" data-lang="html"><span class="na">data-placement=</span><span class="s">"left"</span></code>, value supported are : top, bottom, left, right.</p>
 <pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">data-toggle=</span><span class="s">"tooltip"</span> <span class="na">title=</span><span class="s">"Hooray!"</span> <span class="na">data-placement=</span><span class="s">"left"</span><span class="nt">&gt;</span>this link has a tooltip on the left<span class="nt">&lt;/a&gt;</span></code></pre>
           <a href="#" data-toggle="tooltip" title="Hooray!" data-placement="left" >this link has a tooltip on the left</a>
+
+<h4>Custom events</h4>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>show.bs.tooltip</td> <td>This event fires immediately when the <code>show</code> instance method is called.</td> </tr>
+<tr> <td>shown.bs.tooltip</td> <td>This event is fired when the tooltip has been made visible to the user (will wait for CSS transitions to complete).</td> </tr>
+<tr> <td>hide.bs.tooltip</td> <td>This event is fired immediately when the <code>hide</code> instance method has been called.</td> </tr>
+<tr> <td>hidden.bs.tooltip</td> <td>This event is fired when the tooltip has finished being hidden from the user (will wait for CSS transitions to complete).</td> </tr>
+<tr> <td>inserted.bs.tooltip</td> <td>This event is fired after the <code>show.bs.tooltip</code> event when the tooltip template has been added to the DOM.</td> </tr>
+</tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'a[data-toggle="tooltip"]'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'hidden.bs.tooltip'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span></code></pre>
+
         </section>
 
         <section id="popovers">
@@ -547,6 +625,19 @@ code .c {
           <p>You need to add the attribute <code class="language-html" data-lang="html"><span class="na">data-toggle=</span><span class="s">"popover"</span></code> to activate popovers. It also support the <code class="language-html" data-lang="html"><span class="na">data-placement</span></code> attribute. Additionnaly to the title, a popover body have to be declared in the attribute <code class="language-html" data-lang="html"><span class="na">data-content=</span><span class="s">"..."</span></code>.</p>
 <pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">data-toggle=</span><span class="s">"popover"</span> <span class="na">data-placement=</span><span class="s">"right"</span> <span class="na">title=</span><span class="s">"Popover Header"</span> <span class="na">data-content=</span><span class="s">"Some content inside the popover"</span><span class="nt">&gt;</span>Toggle popover there -><span class="nt">&lt;/a&gt;</span></code></pre>
           <a href="#" data-toggle="popover" data-placement="right" title="Popover Header" data-content="Some content inside the popover">Toggle popover there -></a><br/><br/>
+
+<h4>Custom events</h4>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>show.bs.popover</td> <td>This event fires immediately when the <code>show</code> instance method is called.</td> </tr>
+<tr> <td>shown.bs.popover</td> <td>This event is fired when the popover has been made visible to the user (will wait for CSS transitions to complete).</td> </tr>
+<tr> <td>hide.bs.popover</td> <td>This event is fired immediately when the <code>hide</code> instance method has been called.</td> </tr>
+<tr> <td>hidden.bs.popover</td> <td>This event is fired when the popover has finished being hidden from the user (will wait for CSS transitions to complete).</td> </tr>
+<tr> <td>inserted.bs.popover</td> <td>This event is fired after the <code>show.bs.popover</code> event when the popover template has been added to the DOM.</td> </tr>
+</tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'a[data-toggle="popover"]'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'show.bs.popover'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span></code></pre>
+
 
         </section>
 
@@ -592,6 +683,15 @@ code .c {
     <span class="sr-only">Next</span>
   </a>
 </div>
+
+<h4 id="carousel-events">Custom events</h4>
+<div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>slide.bs.carousel</td> <td>This event fires immediately when the <code>slide</code> instance method is invoked.</td> </tr>
+<tr> <td>slid.bs.carousel</td> <td>This event is fired when the carousel has completed its slide transition.</td> </tr> </tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#myCarousel'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'slide.bs.carousel'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span></code></pre>
+
         </section>
 
         <section id="affix">
@@ -608,6 +708,19 @@ code .c {
 <span class="nt">&lt;section</span> <span class="na">data-affix-end=</span><span class="s">"#nav"</span><span class="nt">&gt;</span>
 <span class=c>&lt;!-- item that mark the end of the affix position --&gt;</span>
 <span class="nt">&lt;/section&gt;</span></code></pre>
+
+<h4 id="affix-events">Custom events</h4>
+<p>Bootstrap's affix plugin exposes a few events for hooking into affix functionality.</p> <div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody>
+<tr> <td>affix.bs.affix</td> <td>This event fires immediately before the element has been affixed.</td> </tr> 
+<tr> <td>affixed.bs.affix</td> <td>This event is fired after the element has been affixed.</td> </tr> 
+<tr> <td>affix-top.bs.affix</td> <td>This event fires immediately before the element has been affixed-top.</td> </tr> 
+<tr> <td>affixed-top.bs.affix</td> <td>This event is fired after the element has been affixed-top.</td> </tr> 
+<tr> <td>affix-bottom.bs.affix</td> <td>This event fires immediately before the element has been affixed-bottom.</td> </tr> 
+<tr> <td>affixed-bottom.bs.affix</td> <td>This event is fired after the element has been affixed-bottom.</td></tr>
+ </tr> </tbody> </table> </div>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'[data-spy="affix"]'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'affix-top.bs.affix'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span></code></pre>
 	</section>
 
         <section id="scrollspy">
@@ -641,38 +754,13 @@ code .c {
  ...
  <span class="nt">&lt;/section&gt;</span>
  ...</code></pre>
+ <h4 id="scrollspy-events">Events</h4>
+ <div class="table-responsive"> <table class="table table-bordered table-striped bs-events-table"> <thead> <tr> <th>Event Type</th> <th>Description</th> </tr> </thead> <tbody> 
+ <tr> <td>activate.bs.scrollspy</td> <td>This event fires whenever a new item becomes activated by the scrollspy.</td> </tr> </tbody> </table> </div>
+ <pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'.scrollspy a[href="#overview"]'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'activate.bs.scrollspy'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// do something…</span>
+<span class="p">})</span></code></pre>
         </section>
-<!--
-<body data-spy="scroll" data-target=".scrollspy">
-      <div class="col-md-3 scrollspy">
-        <ul id="nav" class="nav hidden-xs hidden-sm" data-spy="affix">
-          <li><a href="#overview">Overview</a></li>
-          <li><a href="#download">Download</a></li>
-          <li><a href="#template">Template</a></li>
-          <li><a href="#alerts">Alerts</a></li>
-          <li><a href="#buttons">Buttons</a>
-            <ul class="nav">
-              <li><a href="#modals"><span class="fa fa-angle-double-right"></span>Modals</a></li>
-              <li><a href="#checks"><span class="fa fa-angle-double-right"></span>Check and Radio buttons</a></li>
-              <li><a href="#dropdown"><span class="fa fa-angle-double-right"></span>Dropdown</a></li>
-            </ul>
-          </li>
-          <li><a href="#collapses">Collapses</a>
-            <ul class="nav">
-              <li><a href="#collapse-panels"><span class="fa fa-angle-double-right"></span>Panel collapes</a></li>
-              <li><a href="#accordions"><span class="fa fa-angle-double-right"></span>Accordions</a></li>
-            </ul>
-          </li>
-          <li><a href="#tabs">Tabs</a></li>
-          <li><a href="#tooltips">Tooltips</a></li>
-          <li><a href="#popovers">Popovers</a></li>
-          <li><a href="#carousels">Carousels</a></li>
-          <li><a href="#affix">Affix</a></li>
-          <li><a href="#scrollspy">ScrollSpy</a></li>
-        </ul>
-      </div>
--->
-
 
     </div>
   </div>

@@ -44,6 +44,13 @@
 		revs.sort(function(a,b) { return b.top-a.top})
 		scrollSpyData[id].items = items
 		scrollSpyData[id].revs  = revs
+	},
+	    trigger = function(obj, type, args) {
+		obj.each(function() {
+			var t = d3.select(this).on(type);
+			if (typeof t === 'function')
+				t.call(this, args);
+		});
 	};
 	// find the transitionEnd event name
 	function whichTransitionEvent() {
@@ -131,12 +138,16 @@
 	// alert dismiss
 	bs.api.alert.click	= function() {
 		if (d3.event) d3.event.preventDefault();
-		var target = bs.api.find.target(this, 'alert');
+		var target = bs.api.find.target(this, 'alert'),
+		    close  = function() {
+			trigger(target.remove(),'closed.bs.alert');
+		};
 		if (target == null) return;
-		if (target.classed('fade'))
-			target.on(bs.api.transitionEvent, function() {target.remove()}).classed('in', false);
+		trigger(target,'close.bs.alert');
+		if (target.classed('fade') && bs.api.transitionEvent != null)
+			target.on(bs.api.transitionEvent, function() {close()}).classed('in', false);
 		else
-			target.remove();
+			close();
 	}
 	// modal button
 	bs.api.modal.click	= function() {
@@ -148,22 +159,26 @@
 			backdrop.on(bs.api.transitionEvent, function() {backdrop.remove()}).classed("in", false);
 			d3.select('body').classed('modal-open',false);
 			target.style('display', 'none');
+			trigger(target,'hidden.bs.modal');
 		},  hide = function() {
-			if (target.classed("fade"))
+			trigger(target,'hide.bs.modal');
+			if (target.classed("fade")  && bs.api.transitionEvent != null)
 				target.on(bs.api.transitionEvent, function() {hide2()}).classed("in", false)
 			else
 				hide2(target);
 		},  show = function() {
 			target.style('display', 'block');
-			target.node().focus()
-			target.classed('in',true)
+			target.node().focus();
+			target.classed('in',true);
+			trigger(target,'shown.bs.modal');
 		};
 		target.on('click.dismiss.bs.modal', function() {if(d3.event.target!=d3.event.currentTarget || target==null) return;hide();});
 		target.selectAll('[data-dismiss="modal"]').on('click.dismiss.bs.modal', function() {if (target == null) return;hide();});
 		d3.select('body').classed('modal-open',true);
 		backdrop = d3.select('body').append('div').attr('class', 'modal-backdrop').classed('fade', target.classed('fade'));
 		backdrop.node().offsetWidth; // force reflow animation
-		if (target.classed('fade'))
+		trigger(target,'show.bs.modal');
+		if (target.classed('fade')  && bs.api.transitionEvent != null)
 			backdrop.on(bs.api.transitionEvent, function() {show()}).classed('in',true);
 		else
 			show();
@@ -191,8 +206,10 @@
 		d3.selectAll('[data-toggle="dropdown"]').each(function() {
 			var t = bs.api.find.target(this, 'dropdown')
 			if(t==null || !t.classed('open')) return;
-			d3.select(this).attr('aria-expanded', 'false')
-			t.classed('open', false)
+			trigger(t,'hide.bs.dropdown');
+			d3.select(this).attr('aria-expanded', 'false');
+			t.classed('open', false);
+			trigger(t,'hidden.bs.dropdown');
 		})
 	}
 	bs.api.dropdown.click	= function() {
@@ -202,15 +219,17 @@
 		}
 		var	me = d3.select(this);
 		if (me.classed('disabled')) return;
-		var target = bs.api.find.target(this, 'dropdown')
+		var target = bs.api.find.target(this, 'dropdown');
 		if (target==null|| target.classed('disabled')) return;
 		var o = target.classed('open');
 
 		bs.api.dropdown.closeAll();
 		if (!o) {
-			me.node().focus()
-			me.attr('aria-expanded', 'true')
-			target.classed('open', true)
+			trigger(target,'show.bs.dropdown');
+			me.node().focus();
+			me.attr('aria-expanded', 'true');
+			target.classed('open', true);
+			trigger(target,'shown.bs.dropdown');
 		}
 		return false;
 	}
@@ -223,11 +242,14 @@
 			cur_tar	= bs.api.find.target(this, 'tab-pane'),
 			prv_a	= cur_ul.select('.active a'),
 			next	= function() {
-				if (prv_a.size()>0)
-					bs.api.find.target(prv_a.node(), 'tab-pane').classed('active',false)
+				if (prv_a.size()>0) {
+					trigger(prv_a.attr('aria-expanded', false),'hidden.bs.tab');
+					bs.api.find.target(prv_a.node(), 'tab-pane').classed('active',false);
+				}
 				cur_li.classed('active', true);
-				cur_a.attr('aria-expanded', true);
+				trigger(cur_a.attr('aria-expanded', true),'show.bs.tab');
 				cur_tar.classed('active',true).classed('in',true);
+				trigger(cur_a,'shown.bs.tab'); //TODO: should happen after the transition
 		};
 		if(cur_li.classed('active')) return;
 		if (prv_a.size()<1) {
@@ -237,11 +259,13 @@
 		var	prv_li	= d3.select(bs.api.find.parent(prv_a.node(),'LI')),
 			prv_tar	= bs.api.find.target(prv_a.node(), 'tab-pane');
 		prv_li.classed('active', false);
-		prv_a.attr('aria-expanded', false);
-		if (prv_tar.classed('fade'))
+		trigger(prv_a.attr('aria-expanded', false),'hide.bs.tab');
+		if (prv_tar.classed('fade') && bs.api.transitionEvent != null) {
 			prv_tar.on(bs.api.transitionEvent, function() {next()}).classed('in',false);
-		else 
+		} else {
+			prv_tar.classed('in',false);
 			next();
+		}
 	};
 	// collapse & accordion
 	bs.api.collapse.click	= function() {
@@ -254,6 +278,7 @@
 			active = target.classed('in'),
 			hide2  = function(t) {
 				t.classed('collapsing',false).classed('collapse',true).style(dim, '');
+				trigger(target,'hidden.bs.collapse');
 			},
 			hide   = function() {
 				var m = me,
@@ -264,6 +289,7 @@
 				}
 				if(t.size()<1)
 					return
+				trigger(t,'hide.bs.collapse');
 				t.style(dim, t.node()[sc]+"px").node().offsetWidth;
 				m.classed('collapsed', true).attr('aria-expended','false')
 				t.attr('aria-expended', 'false').classed('collapsing', true).classed('collapse', false).classed('in', false);
@@ -272,10 +298,12 @@
 			show2  = function() {
 				target.classed('collapsing',false).classed('collapse',true).classed('in',true);
 				target.style(dim, '');
+				trigger(target,'shown.bs.collapse');
 			},
 			show   = function() {
 				if (parent!=null)
 					hide()
+				trigger(target,'show.bs.collapse');
 				target.node().offsetWidth;
 				target.attr('aria-expended', 'true').classed('collapsing', true).classed('collapse', false);
 				me.classed('collapsed', false).attr('aria-expended','true')
@@ -296,10 +324,13 @@
 		if (d3.event) d3.event.preventDefault();
 		var	me	= d3.select(this),
 			type	= me.attr('data-toggle'),
-			target	= bs.api.find.target(this, type);
+			target	= bs.api.find.target(this, type)
+			creating= false;
 		
 		// creating if missing
 		if(target == null) {
+			trigger(me,'show.bs.'+type);
+			creating=true;
 			var	id	= 'd3-bs-'+type+'-'+(toolCnt++),
 				pos	= me.attr('data-placement'),
 				title	= me.attr('title'),
@@ -332,13 +363,23 @@
 			case 'left':	x -= w;		y += (bh - h)/2;break;
 			case 'right':	x += bw;	y += (bh - h)/2;break;
 			}
-			target.style('top', y+'px').style('left',x+'px')
+			target.style('top', y+'px').style('left',x+'px');
+			trigger(me,'inserted.bs.'+type);
 		}
-		var show = !target.classed('in')
+		var show = !target.classed('in');
 		if (type == 'popover' && d3.event.type == 'mouseover') return;
 		if (type == 'tooltip')
-			show = (d3.event.type == 'mouseover')
-		target.classed('in', show)
+			show = (d3.event.type == 'mouseover');
+		if (show)
+			if(!creating) trigger(me,'show.bs.'+type);
+		else
+			trigger(me,'hide.bs.'+type);
+		target.classed('in', show);
+		// TODO: this should come after the transition
+		if (show)
+			trigger(me,'shown.bs.'+type);
+		else
+			trigger(me,'hidden.bs.'+type);
 	};
 	// carousel handling
 	bs.api.carousel.moveTo	= function(mv) {
@@ -351,11 +392,12 @@
 			items	= active.node().parentNode.children,
 			next,
 			endAnim	= function(next) {
-			me.selectAll('.carousel-indicators > .active').classed('active',false)
-			me.select('[data-slide-to="'+next+'"]').classed('active',true)
-			active.classed('active',false).classed(dir,false).on(bs.api.transitionEvent, null)
-			me.selectAll('.item.active').classed('active',false)
-			d3.select(items[next]).classed(type,false).classed(dir,false).classed('active',true)
+			me.selectAll('.carousel-indicators > .active').classed('active',false);
+			me.select('[data-slide-to="'+next+'"]').classed('active',true);
+			active.classed('active',false).classed(dir,false).on(bs.api.transitionEvent, null);
+			me.selectAll('.item.active').classed('active',false);
+			d3.select(items[next]).classed(type,false).classed(dir,false).classed('active',true);
+			trigger(me, 'slid.bs.carousel', {'direction':dir});
 		};
 		if (items.length<2) return;
 		for(i=0;i<items.length;i++)
@@ -374,6 +416,7 @@
 			if (next>=items.length)	next=0;
 			else if (next<0)	next = items.length-1;
 		}
+		trigger(me, 'slide.bs.carousel', {'direction':dir});
 		if (me.classed('slide')) {
 			var nt  = d3.select(items[next]);
 			me.selectAll('.item').on(bs.api.transitionEvent, null)
@@ -419,16 +462,23 @@
 			y	= window.scrollY;
 		if (max<y && me.classed('affix-bottom'))
 			return
-		else if (max<y)
-			me.classed('affix-top',false).classed('affix',false).classed('affix-bottom',true).style('top', (max-h)+'px')
-		else if (min>y && me.classed('affix-top'))
+		else if (max<y) {
+			trigger(me, 'affix-bottom.bs.affix');
+			me.classed('affix-top',false).classed('affix',false).classed('affix-bottom',true).style('top', (max-h)+'px');
+			trigger(me, 'affixed-bottom.bs.affix');
+		} else if (min>y && me.classed('affix-top'))
 			return
-		else if (min>y)
+		else if (min>y) {
+			trigger(me, 'affix-top.bs.affix');
 			me.classed('affix-top',true).classed('affix',false).classed('affix-bottom',false).style('top', null)
-		else if (me.classed('affix'))
+			trigger(me, 'affixed-top.bs.affix');
+		} else if (me.classed('affix'))
 			return
-		else
+		else {
+			trigger(me, 'affix.bs.affix');
 			me.classed('affix-top',false).classed('affix',true).classed('affix-bottom',false).style('top', null)
+			trigger(me, 'affixed.bs.affix');
+		}
 	}
 	bs.api.affix.init	= function() {
 		var	that	= this,
@@ -454,21 +504,23 @@
 	}
 	bs.api.scroll.scroll	= function(container, id) {
 		if ((typeof scrollSpyData[id] == 'undefined') || scrollSpyData[id].scrollHeight!=container.scrollHeight)
-			scrollSpyRefresh.call(this,container,id)
+			scrollSpyRefresh.call(this,container,id);
 		if (Math.abs(scrollSpyData[id].scrollY - window.scrollY)<10)
 			return;
-		scrollSpyData[id].scrollY = window.scrollY
-		var it = scrollSpyData[id].items.find(function(e) { return e.top>window.scrollY})
+		scrollSpyData[id].scrollY = window.scrollY;
+		var it = scrollSpyData[id].items.find(function(e) { return e.top>window.scrollY});
 		if(typeof it == 'undefined')
-			it = scrollSpyData[id].revs[0]
+			it = scrollSpyData[id].revs[0];
 		if ((typeof scrollSpyData[id].current != 'undefined') && scrollSpyData[id].current==it) return;
 		scrollSpyData[id].current = it;
-		d3.select(this).selectAll('.active').classed('active',false)
-		var p = it.item
+		d3.select(this).selectAll('.active').classed('active',false);
+		trigger(d3.select(it.item), 'activate.bs.scrollspy');
+		var p = it.item;
 		do {
-			p = p.parentNode
-			if(p.nodeName == 'LI')
-				d3.select(p).classed('active',true)
+			p = p.parentNode;
+			if(p.nodeName == 'LI') {
+				d3.select(p).classed('active',true);
+			}
 		} while (p!=this);
 	}
 	bs.api.scroll.init	= function() {
