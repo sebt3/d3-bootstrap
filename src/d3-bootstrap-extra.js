@@ -21,15 +21,9 @@ bs.p	= function(ptext) {
 	return chart;
 }
 bs.box	= function() {
-	var title, body, footer, cl="box-default", tools = [], id = "bsBox-"+(++boxCnt);
-	function chart(s) { s.each(chart.init); return chart; }
-	chart.title	= function(t) {title = t;return chart;};
-	chart.tool	= function(t) {tools.push(t);return chart;};
-	chart.class	= function(t) {cl = t;return chart;};
-	chart.body	= function(t) {body = t;return chart;};
-	chart.footer	= function(t) {footer = t;return chart;};
-	chart.init	= function() { 
-		var root= d3.select(this).append('div').attr('class', 'box '+cl), ttl;
+	var title, body, footer, cl="box-default", tools = [], id = "bsBox-"+(++boxCnt), root;
+	function draw() {
+		var ttl;
 		if (typeof title != 'undefined') {
 			ttl = root.append('div').attr('class', 'box-header with-border');
 			ttl.append('h3').attr('class', 'box-title').html(title);
@@ -49,12 +43,23 @@ bs.box	= function() {
 					btn.append('i').attr('class', d.icon)
 			});
 		}
-		root	= root.append('div').attr('class', 'collapse in').attr('id',id);
-		var bod = root.append('div').attr('class', 'box-body');
+		var tmp	= root.append('div').attr('class', 'collapse in').attr('id',id);
+		var bod = tmp.append('div').attr('class', 'box-body');
 		if (typeof body != 'undefined')
 			bod.call(body)
 		if (typeof footer != 'undefined')
-			root.append('div').attr('class', 'box-footer').call(footer)
+			tmp.append('div').attr('class', 'box-footer').call(footer)
+	}
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.title	= function(t) {title = t;return chart;};
+	chart.tool	= function(t) {tools.push(t);return chart;};
+	chart.class	= function(t) {cl = t;return chart;};
+	chart.body	= function(t) {body = t;return chart;};
+	chart.footer	= function(t) {footer = t;return chart;};
+	chart.update	= function() {root.html('');draw();return chart;};
+	chart.init	= function() { 
+		root = d3.select(this).append('div').attr('class', 'box '+cl);
+		draw();
 		return chart;
 	};
 	return chart;
