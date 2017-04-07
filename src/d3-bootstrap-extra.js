@@ -51,11 +51,11 @@ bs.box	= function() {
 			tmp.append('div').attr('class', 'box-footer').call(footer)
 	}
 	function chart(s) { s.each(chart.init); return chart; }
-	chart.title	= function(t) {title = t;return chart;};
+	chart.title	= function(t) {if (arguments.length) {title = t;return chart;} return title;};
 	chart.tool	= function(t) {tools.push(t);return chart;};
-	chart.class	= function(t) {cl = t;return chart;};
-	chart.body	= function(t) {body = t;return chart;};
-	chart.footer	= function(t) {footer = t;return chart;};
+	chart.class	= function(t) {if (arguments.length) {cl = t;return chart;} return cl;};
+	chart.body	= function(t) {if (arguments.length) {body = t;return chart;} return body;};
+	chart.footer	= function(t) {if (arguments.length) {footer = t;return chart;} return footer;};
 	chart.update	= function() {root.html('');draw();return chart;};
 	chart.init	= function() { 
 		root = d3.select(this).append('div').attr('class', 'box '+cl);
