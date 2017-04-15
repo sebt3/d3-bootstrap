@@ -202,7 +202,8 @@
 		return false;
 	}
 	// DropDown
-	bs.api.dropdown.closeAll= function() {
+	
+	function dropdown_closeAll() {
 		d3.selectAll('[data-toggle="dropdown"]').each(function() {
 			var t = bs.api.find.target(this, 'dropdown')
 			if(t==null || !t.classed('open')) return;
@@ -211,6 +212,13 @@
 			t.classed('open', false);
 			trigger(t,'hidden.bs.dropdown');
 		})
+	}
+
+	bs.api.dropdown.closeAll= function() {
+		if (d3.event == null) { dropdown_closeAll(); return; }
+		var t = bs.api.find.classedParent(d3.event.target, 'dropdown');
+		if (t == null)
+			dropdown_closeAll();
 	}
 	bs.api.dropdown.click	= function() {
 		if (d3.event) {
@@ -223,7 +231,7 @@
 		if (target==null|| target.classed('disabled')) return;
 		var o = target.classed('open');
 
-		bs.api.dropdown.closeAll();
+		dropdown_closeAll();
 		if (!o) {
 			trigger(target,'show.bs.dropdown');
 			me.node().focus();
