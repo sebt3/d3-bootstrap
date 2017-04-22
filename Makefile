@@ -12,7 +12,7 @@ dist/d3-bootstrap-all.js: $(ALL_SRC)
 	@cat $(ALL_SRC) > $@
 dist/d3-bootstrap-withextra.min.js: $(EXT_SRC)
 	@$(SHOW_COMPILE) $@
-	@$(JS_COMPILER) $(ALL_SRC) > $@
+	@$(JS_COMPILER) $(EXT_SRC) > $@
 dist/d3-bootstrap-all.min.js: $(ALL_SRC)
 	@$(SHOW_COMPILE) $@
 	@$(JS_COMPILER) $(ALL_SRC) > $@

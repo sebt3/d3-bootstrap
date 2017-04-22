@@ -10,6 +10,7 @@
 	factory(global.bs, global);
 })(this, (function(bs, global) {
 var boxCnt = 0;
+var fileCnt = 0;
 	
 bs.p	= function(ptext) {
 	var text=ptext;
@@ -229,12 +230,15 @@ bs.progress = function() {
 	return chart;
 }
 bs.form = function() {
-	var body, url = "#";
+	var body, url = "#", enc;
 	function chart(s) { s.each(chart.init); return chart; }
 	chart.body	= function(t) { body = t;return chart;}
 	chart.url	= function(t) {  url = t;return chart;}
+	chart.enctype	= function(t) {  enc = t;return chart;}
 	chart.init	= function() {
 		var f = d3.select(this).append('form').attr('class', 'form-horizontal').attr('action',url).attr('method','post')
+		if (typeof enc != 'undefined')
+			f.attr('enctype',enc)
 		if (typeof body != 'undefined')
 			f.call(body)
 	}
@@ -255,11 +259,24 @@ bs.select = function(p_id) {
 	}
 	return chart;
 }
+bs.file = function(p_name) {
+	var name = p_name, opts = [], val, id="bsFile-"+(++fileCnt);
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.init	= function() {
+		var i = d3.select(this).append('div').attr('class', 'input-group');
+		var l = i.append('div').attr('class','form-control').attr('id', id).html('&hellip;');
+		var s = i.append('label').attr('class', 'input-group-btn').append('span').attr('class', 'btn btn-primary');
+		s.append('span').html('Browse&hellip;');
+		s.append('input').attr('type', 'file').attr('style','display: none;').attr('name', name).on('change', function() {l.html(this.value);});
+	}
+	return chart;
+}
 bs.formGroup = function(p_id) {
-	var label = "", addons = [], id = p_id, val, place, obj, type='text';
+	var label = "", addons = [], id = p_id, val, place, obj, type='text',cl='';
 	function chart(s) { s.each(chart.init); return chart; }
 	chart.label	= function(t) {   label = t;return chart;}
 	chart.obj	= function(t) {   obj   = t;return chart;}
+	chart.class	= function(t) {   cl    = t;return chart;}
 	chart.type	= function(t) {   type  = t;return chart;}
 	chart.value	= function(t,h) { val   = t; if (typeof h != 'undefined') place=h;return chart;}
 	chart.add	= function(t,c) { if (typeof c == 'undefined') c=false;addons.push({ 'text': t, 'before':c});return chart;}
@@ -276,7 +293,7 @@ bs.formGroup = function(p_id) {
 		if(typeof obj != 'undefined')
 			d.call(obj)
 		else {
-			var t = d.append('input').attr('class','form-control').attr('id',id).attr('name',id).attr('type',type)
+			var t = d.append('input').attr('class','form-control '+cl).attr('id',id).attr('name',id).attr('type',type)
 			if(typeof place != 'undefined' && type!='hidden')
 				t.attr('placeholder', place)
 			else if(type=='hidden')

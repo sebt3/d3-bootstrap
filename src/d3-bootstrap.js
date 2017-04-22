@@ -118,8 +118,12 @@
 	},
 	bs.api.find.classedParent= function(that, p_type) {
 		var p = that
-		while (p.nodeName != 'HTML' && ! d3.select(p).classed(p_type) && typeof p.parentNode !== 'undefined')
+		if(typeof p === 'undefined' || p == null)
+			return null;
+		while (p != null && p.nodeName != 'HTML' && ! d3.select(p).classed(p_type) && typeof p.parentNode !== 'undefined')
 			p = p.parentNode;
+		if(typeof p === 'undefined' || p == null)
+			return null;
 		if (! d3.select(p).classed(p_type))
 			return null;
 		return p;
