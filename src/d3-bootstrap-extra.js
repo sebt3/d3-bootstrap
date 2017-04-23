@@ -9,14 +9,22 @@
 	
 	factory(global.bs, global);
 })(this, (function(bs, global) {
-var boxCnt = 0;
-var fileCnt = 0;
-	
+var boxCnt = 0, fileCnt = 0, tabCnt = 0, carouselCnt=0;
+
 bs.p	= function(ptext) {
 	var text=ptext;
 	function chart(s) { s.each(chart.init); return chart; }
 	chart.init	= function() { 
 		var root= d3.select(this).append('p').html(text);
+		return chart;
+	};
+	return chart;
+}
+bs.h3	= function(ptext) {
+	var text=ptext;
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.init	= function() { 
+		var root= d3.select(this).append('h3').html(text);
 		return chart;
 	};
 	return chart;
@@ -105,19 +113,24 @@ bs.modal = function() {
 	return chart;
 }
 bs.row	= function() {
-	var cells = [];
-	function chart(s) { s.each(chart.init); return chart; }
-	chart.cell	= function(l,c) {cells.push({ 'obj': c, 'class':l});return chart;}
-	chart.init	= function() { 
-		d3.select(this).append('div').attr('class', 'row').selectAll('div').data(cells).enter().append('div').each(function(d,i) {
+	var cells = [], root;
+	function draw() {
+		root.selectAll('div').data(cells).enter().append('div').each(function(d,i) {
 			var c = d3.select(this);
 			if(typeof d.class != 'undefined')
 				c.attr('class', d.class)
 			if(typeof d.obj != 'undefined')
 				c.call(d.obj)
 		});
+	}
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.cell	= function(l,c) {cells.push({ 'obj': c, 'class':l});return chart;}
+	chart.init	= function() { 
+		root = d3.select(this).append('div').attr('class', 'row');
+		draw();
 		return chart;
 	};
+	chart.update	= function() {root.html('');draw();return chart;};
 	return chart;
 }
 bs.union= function() {
@@ -147,6 +160,66 @@ bs.pills= function() {
 				p.append('span').attr('class','pull-right').html(d.right)
 			if (typeof d.color != 'undefined')
 				p.attr('class', d.color)
+		});
+		return chart;
+	};
+	return chart;
+}
+bs.tabs= function() {
+	var tabs = [], head, content;
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.data	= function(t) {tabs = t;return chart;}
+	chart.tab	= function(n,t) {tabs.push({name: n, pane: t});return chart;}
+	chart.init	= function() {
+		var root = d3.select(this), first=true;
+		head = root.append('ul').attr('class','nav nav-tabs');
+		content = root.append('div').attr('class','tab-content');
+		
+		tabs.forEach(function(d) {
+			var id  = "bsTab-"+(++tabCnt);
+			var li  = head.append('li').attr('role','presentation');
+			var div = content.append('div').attr('id',id).attr('class','tab-pane fade');
+			li.append('a').attr('data-toggle', 'tab').attr('href','#'+id).html(d.name);
+			div.call(d.pane);
+			if(first) {
+				li.attr('class','active');
+				div.classed('in',true).classed('active',true);
+			}
+			first = false;
+		});
+		return chart;
+	};
+	return chart;
+}
+bs.carousel= function() {
+	var items = [], head, content, def='/pics/noscreen.png';
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.data	= function(t) {items = t;return chart;}
+	chart.default	= function(t) {def = t;return chart;}
+	chart.pic	= function(u,t) {items.push({url: u, alt: t});return chart;}
+	chart.init	= function() {
+		var cnt=0, id= "bsCarousel-"+(++carouselCnt),first = true, root = d3.select(this).append('div').attr('id',id).attr('class','carousel slide').attr('data-ride', 'carousel');
+		head = root.append('ol').attr('class','carousel-indicators');
+		content = root.append('div').attr('class','carousel-inner').attr('role','listbox');
+		var l = root.append('a').attr('class','left carousel-control').attr('href','#'+id).attr('role','button').attr('data-slide','prev'),
+		    r = root.append('a').attr('class','right carousel-control').attr('href','#'+id).attr('role','button').attr('data-slide','next');
+		l.append('span').attr('class','glyphicon glyphicon-chevron-left').attr('aria-hidden','true');
+		l.append('span').attr('class','sr-only').html('Previous');
+		r.append('span').attr('class','glyphicon glyphicon-chevron-right').attr('aria-hidden','true');
+		r.append('span').attr('class','sr-only').html('Next');
+		if (items.length==0)
+			chart.pic(def,'NoImage');
+		items.forEach(function(d) {
+			var n   = cnt++;
+			var li  = head.append('li').attr('data-target','#'+id).attr('data-slide-to',n);
+			var div = content.append('div').attr('class','item');
+			li.append('a').attr('data-toggle', 'tab').attr('href','#'+id).html(d.name);
+			div.append('img').attr('alt',d.alt).attr('src',d.url);
+			if(first) {
+				li.attr('class','active');
+				div.classed('active',true);
+			}
+			first = false;
 		});
 		return chart;
 	};
@@ -402,4 +475,46 @@ bs.modalDelete = function() {
 	}
 	return chart;
 }
+
+bs.mdViewer = function() {
+	var src = "", root, inited=false;
+	function draw() {
+		root.html('');
+		
+		var ar = src.split('\n');
+		ar.forEach(function(l) {
+			type = 'p';
+			ret = l;
+			// inline remplacement
+			ret = ret.replace(/!\[([^\]]*)\]\(([^\)]*)\)/g,'<img src="$2" alt="$1"></img>');
+			ret = ret.replace(/\[([^\]]*)\]\(([^\)]*)\)/g,'<a href="$2">$1</a>');
+			ret = ret.replace(/\*\*([^\*]*)\*\*/g,'<b>$1</b>');
+			ret = ret.replace(/\_\_([^\_]*)\_\_/g,'<b>$1</b>');
+			ret = ret.replace(/\*([^\*]*)\*/g,'<i>$1</i>');
+			ret = ret.replace(/\_([^\_]*)\_/g,'<i>$1</i>');
+			// TODO: Improve list management by a lot
+			if (/^\+ /.test(ret))		{type='ul';ret = ret.replace(/^\+ (.*)$/,'<li>$1</li>')}
+			if (/^\* /.test(ret))		{type='ul';ret = ret.replace(/^\* (.*)$/,'<li>$1</li>')}
+			if (/^\- /.test(ret))		{type='ul';ret = ret.replace(/^\- (.*)$/,'<li>$1</li>')}
+			// final remplacement
+			if (/^###### /.test(ret))	{type='h6';ret = ret.replace(/^###### /,'')}
+			if (/^##### /.test(ret))	{type='h5';ret = ret.replace(/^##### /,'')}
+			if (/^#### /.test(ret))		{type='h4';ret = ret.replace(/^#### /,'')}
+			if (/^### /.test(ret))		{type='h3';ret = ret.replace(/^### /,'')}
+			if (/^## /.test(ret))		{type='h2';ret = ret.replace(/^## /,'')}
+			if (/^# /.test(ret))		{type='h1';ret = ret.replace(/^# /,'')}
+			root.append(type).html(ret);
+		});
+	}
+	function chart(s) { s.each(chart.init); inited=true;return chart; }
+	chart.src	= function(t) {if (arguments.length) {if(t!=null)src = t;if(inited)draw();return chart;} return src;};
+	chart.init	= function() { 
+		root = d3.select(this).append('div').attr('class', 'mdViewer');
+		draw();
+		return chart;
+	};
+	chart.update	= function() {root.html('');draw();return chart;};
+	return chart;
+}
+
 }));
