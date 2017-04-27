@@ -194,7 +194,7 @@ bs.tabs= function() {
 bs.carousel= function() {
 	var items = [], head, content, def='/pics/noscreen.png';
 	function chart(s) { s.each(chart.init); return chart; }
-	chart.data	= function(t) {items = t;return chart;}
+	chart.data	= function(t) {if(t!=null)items = t;return chart;}
 	chart.default	= function(t) {def = t;return chart;}
 	chart.pic	= function(u,t) {items.push({url: u, alt: t});return chart;}
 	chart.init	= function() {
@@ -207,7 +207,7 @@ bs.carousel= function() {
 		l.append('span').attr('class','sr-only').html('Previous');
 		r.append('span').attr('class','glyphicon glyphicon-chevron-right').attr('aria-hidden','true');
 		r.append('span').attr('class','sr-only').html('Next');
-		if (items.length==0)
+		if (items.length==0 )
 			chart.pic(def,'NoImage');
 		items.forEach(function(d) {
 			var n   = cnt++;
@@ -510,6 +510,24 @@ bs.mdViewer = function() {
 	chart.src	= function(t) {if (arguments.length) {if(t!=null)src = t;if(inited)draw();return chart;} return src;};
 	chart.init	= function() { 
 		root = d3.select(this).append('div').attr('class', 'mdViewer');
+		draw();
+		return chart;
+	};
+	chart.update	= function() {root.html('');draw();return chart;};
+	return chart;
+}
+bs.textarea = function(p_id) {
+	var src = "", root, inited=false, id=p_id, lineCnt=10;
+	function draw() {
+		root.html('');
+		t = root.append('textarea').attr('name', id).attr('rows', lineCnt);
+		t.node().value = src;
+	}
+	function chart(s) { s.each(chart.init); inited=true;return chart; }
+	chart.value	= function(t) {if (arguments.length) {if(t!=null)src = t;if(inited)draw();return chart;} return src;};
+	chart.lineCount	= function(t) {if (arguments.length) {if(t!=null)lineCnt=t;return chart;} return lineCnt;};
+	chart.init	= function() { 
+		root = d3.select(this).append('div').attr('class', 'textEditor');
 		draw();
 		return chart;
 	};
