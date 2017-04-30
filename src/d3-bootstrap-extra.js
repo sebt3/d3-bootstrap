@@ -517,21 +517,19 @@ bs.mdViewer = function() {
 	return chart;
 }
 bs.textarea = function(p_id) {
-	var src = "", root, inited=false, id=p_id, lineCnt=10;
+	var src = "", txt, inited=false, id=p_id, lineCnt=10;
 	function draw() {
-		root.html('');
-		t = root.append('textarea').attr('name', id).attr('rows', lineCnt);
-		t.node().value = src;
+		txt.node().value = src;
 	}
 	function chart(s) { s.each(chart.init); inited=true;return chart; }
 	chart.value	= function(t) {if (arguments.length) {if(t!=null)src = t;if(inited)draw();return chart;} return src;};
 	chart.lineCount	= function(t) {if (arguments.length) {if(t!=null)lineCnt=t;return chart;} return lineCnt;};
 	chart.init	= function() { 
-		root = d3.select(this).append('div').attr('class', 'textEditor');
+		txt = d3.select(this).append('div').attr('class', 'textEditor').append('textarea').attr('name', id).attr('rows', lineCnt);
 		draw();
 		return chart;
 	};
-	chart.update	= function() {root.html('');draw();return chart;};
+	chart.update	= function() {draw();return chart;};
 	return chart;
 }
 
