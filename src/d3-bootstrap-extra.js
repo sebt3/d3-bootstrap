@@ -101,7 +101,7 @@ bs.modal = function() {
 		var root= d3.select(this).append('div').attr('class', 'modal fade '+cl).attr('id', id).attr('tabindex','-1').attr('role','dialog').append('div').attr('class','modal-dialog').attr('role','document').append('div').attr('class','modal-content')
 		    ttl	= root.append('div').attr('class', 'modal-header'),
 		    bod = root.append('div').attr('class', 'modal-body');
-		ttl.append('button').attr('type', 'button').attr('class', 'close').attr('data-dismiss','modal').attr('aria-label','Close').append('span').attr('aria-hidden','true').html('&times;');
+		ttl.append('button').attr('type', 'button').attr('class', 'close').attr('data-dismiss','modal').attr('aria-label','Close').append('span').attr('aria-hidden','true').html('&times;').on('click.bs.modal.data-api',		bs.api.modal.click);
 		if (typeof title != 'undefined')
 			ttl.append('h4').attr('class','modal-title').html(title)
 		if (typeof body != 'undefined')
@@ -179,7 +179,7 @@ bs.tabs= function() {
 			var id  = "bsTab-"+(++tabCnt);
 			var li  = head.append('li').attr('role','presentation');
 			var div = content.append('div').attr('id',id).attr('class','tab-pane fade');
-			li.append('a').attr('data-toggle', 'tab').attr('href','#'+id).html(d.name);
+			li.append('a').attr('data-toggle', 'tab').attr('href','#'+id).html(d.name).on('click.bs.tab.data-api',bs.api.tab.click);
 			div.call(d.pane);
 			if(first) {
 				li.attr('class','active');
@@ -203,6 +203,12 @@ bs.carousel= function() {
 		content = root.append('div').attr('class','carousel-inner').attr('role','listbox');
 		var l = root.append('a').attr('class','left carousel-control').attr('href','#'+id).attr('role','button').attr('data-slide','prev'),
 		    r = root.append('a').attr('class','right carousel-control').attr('href','#'+id).attr('role','button').attr('data-slide','next');
+		l.on('click.bs.carousel.data-api', function() {
+			bs.api.carousel.moveTo.call(root.node(), 'prev')
+		});
+		r.on('click.bs.carousel.data-api', function() {
+			bs.api.carousel.moveTo.call(root.node(), 'next')
+		});
 		l.append('span').attr('class','glyphicon glyphicon-chevron-left').attr('aria-hidden','true');
 		l.append('span').attr('class','sr-only').html('Previous');
 		r.append('span').attr('class','glyphicon glyphicon-chevron-right').attr('aria-hidden','true');
@@ -212,8 +218,10 @@ bs.carousel= function() {
 		items.forEach(function(d) {
 			var n   = cnt++;
 			var li  = head.append('li').attr('data-target','#'+id).attr('data-slide-to',n);
+			li.on('click.bs.carousel.data-api', function() {
+				bs.api.carousel.moveTo.call(root.node(), n)
+			});
 			var div = content.append('div').attr('class','item');
-			li.append('a').attr('data-toggle', 'tab').attr('href','#'+id).html(d.name);
 			div.append('img').attr('alt',d.alt).attr('src',d.url);
 			if(first) {
 				li.attr('class','active');
@@ -221,6 +229,7 @@ bs.carousel= function() {
 			}
 			first = false;
 		});
+		root.each(bs.api.carousel.init);
 		return chart;
 	};
 	return chart;
@@ -391,7 +400,7 @@ bs.dropdown = function() {
 	chart.text	= function(t) {text = t;return chart;};
 	chart.init	= function() {
 		var div = d3.select(this).append('div').attr('class','btn-group dropdown'),
-		    b = div.append('button').attr('class', 'btn '+cl+' dropdown-toggle').attr('data-toggle','dropdown'),
+		    b = div.append('button').attr('class', 'btn '+cl+' dropdown-toggle').attr('data-toggle','dropdown').on('click.bs.dropdown.data-api',	bs.api.dropdown.click),
 		    u = div.append('ul').attr('class','dropdown-menu');
 		b.append('span').html(text+' ')
 		b.append('i').attr('aria-hidden','true').attr('class',icon)
