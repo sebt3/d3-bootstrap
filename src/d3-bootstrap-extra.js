@@ -440,6 +440,21 @@ bs.button.a = function() {
 	}
 	return chart;
 }
+bs.button.toggle = function() {
+	var cl = "btn-default", toggle = "modal", icon, text="", target="";
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.target	= function(t,c) { target = t; if (typeof c != 'undefined') toggle=c;return chart;}
+	chart.class	= function(t) {  cl = t;return chart;};
+	chart.icon	= function(t) {icon = t;return chart;};
+	chart.text	= function(t) {text = t;return chart;};
+	chart.init	= function() {
+		var r = d3.select(this).append('a').attr('href','#').attr('class', 'btn '+cl).attr('data-toggle', toggle).attr('data-target', target)
+		if(typeof icon != 'undefined')
+			r.append('i').attr('aria-hidden','true').attr('class',icon)
+		r.append('span').text(' '+text)
+	}
+	return chart;
+}
 bs.button.form = function() {
 	var cl = "btn-default", url = "#", icon, text="", type="submit";
 	function chart(s) { s.each(chart.init); return chart; }
