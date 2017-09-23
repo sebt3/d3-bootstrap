@@ -223,6 +223,9 @@ bs.carousel= function() {
 			});
 			var div = content.append('div').attr('class','item');
 			div.append('img').attr('alt',d.alt).attr('src',d.url);
+			if (typeof d.desc != 'undefined') {
+				div.append('div').attr('class', 'carousel-caption').html(d.desc)
+			}
 			if(first) {
 				li.attr('class','active');
 				div.classed('active',true);
