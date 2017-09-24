@@ -396,7 +396,6 @@ bs.formGroup = function(p_id) {
 bs.dropdown = function() {
 	var cl = "btn-default", icon = "fa fa-caret-down", text="", items  = [];
 	function chart(s) { s.each(chart.init); return chart; }
-	chart.url	= function(t) { url = t;return chart;}
 	chart.class	= function(t) {  cl = t;return chart;};
 	chart.item	= function(t,c) { items.push({ 'text': t, 'call':c});return chart;}
 	chart.icon	= function(t) {icon = t;return chart;};

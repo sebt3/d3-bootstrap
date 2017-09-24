@@ -341,6 +341,18 @@ code .kd {
 <pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#myModal'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'hidden.bs.modal'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="c1">// do something...</span>
 <span class="p">})</span></code></pre>
+<h4 id="modals-events">Extra: Creating a modal</h4>
+<p>Using the extra.js file, you have acces to functions to create modal.</p>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#myContainer'</span><span class="p">).</span><span class="nx">call</span><span class="p">(</span><span class="nx">bs.modal</span><span class="p">()
+	.</span><span class="nx">class</span><span class="p">(</span><span class="s1">'modal-danger'</span><span class="p">)
+	.</span><span class="nx">id</span><span class="p">(</span><span class="s1">'deletePackage'</span><span class="p">)
+	.</span><span class="nx">title</span><span class="p">(</span><span class="s1">'Delete Package'</span><span class="p">)
+	.</span><span class="nx">body</span><span class="p">(</span><span class="nx">bs.h3</span><span class="p">(</span><span class="s1">'You're about to delete a package'</span><span class="p">))
+	.</span><span class="nx">footer</span><span class="p">(</span><span class="nx">bs.union</span><span class="p">()
+		.</span><span class="nx">item</span><span class="p">(</span><span class="nx">bs.p</span><span class="p">(</span><span class="s1">'Warning: this action cannot be undone'</span><span class="p">))
+		.</span><span class="nx">item</span><span class="p">(</span><span class="nx">bs.button.submit</span><span class="p">().</span><span class="nx">class</span><span class="p">(</span><span class="s1">'btn-danger'</span><span class="p">).</span><span class="nx">url</span><span class="p">(</span><span class="s1">'/som/url/to/submit'</span><span class="p">))
+	)
+);</span></code></pre>
           </section>
 
           <section id="checks">
@@ -596,6 +608,17 @@ code .kd {
   <span class="nx">this</span> <span class="c1">// displayed tab</span>
 <span class="p">})</span></code></pre>
 
+<h4 id="modals-events">Extra: Creating tabs</h4>
+<p>Using the extra.js file, you have acces to functions to create tabs.</p>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#myContainer'</span><span class="p">).</span><span class="nx">call</span><span class="p">(</span><span class="nx">bs.tabs</span><span class="p">()
+	.</span><span class="nx">tab</span><span class="p">(</span><span class="s1">'Home'</span><span class="p">,</span> <span class="nx">bs.mdViewer</span><span class="p">().</span><span class="nx">src</span><span class="p">(</span><span class="s1">'# Home
+Some contents.'</span><span class="p">))
+	.</span><span class="nx">tab</span><span class="p">(</span><span class="s1">'Menu 1'</span><span class="p">,</span> <span class="nx">bs.mdViewer</span><span class="p">().</span><span class="nx">src</span><span class="p">(</span><span class="s1">'# Menu 1
+Some content in menu 1.'</span><span class="p">))
+	.</span><span class="nx">tab</span><span class="p">(</span><span class="s1">'Menu 2'</span><span class="p">,</span> <span class="nx">bs.mdViewer</span><span class="p">().</span><span class="nx">src</span><span class="p">(</span><span class="s1">'# Menu 2
+Some content in menu 2.'</span><span class="p">))
+);</span></code></pre>
+
         </section>
 
         <section id="tooltips">
@@ -691,6 +714,14 @@ code .kd {
 <pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#myCarousel'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'slide.bs.carousel'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="c1">// do something…</span>
 <span class="p">})</span></code></pre>
+
+<h4 id="modals-events">Extra: Creating carousels</h4>
+<p>Using the extra.js file, you have acces to functions to create carousels.</p>
+<pre><code class="language-js" data-lang="js"><span class="nx">d3.select</span><span class="p">(</span><span class="s1">'#myContainer'</span><span class="p">).</span><span class="nx">call</span><span class="p">(</span><span class="nx">bs.carousel</span><span class="p">()
+	.</span><span class="nx">pic</span><span class="p">(</span><span class="s1">'/path/to/img1.png'</span><span class="p">,</span> <span class="s1">'Alt for img1'</span><span class="p">)
+	.</span><span class="nx">pic</span><span class="p">(</span><span class="s1">'/path/to/img2.png'</span><span class="p">,</span> <span class="s1">'Alt for img2'</span><span class="p">)
+	.</span><span class="nx">pic</span><span class="p">(</span><span class="s1">'/path/to/img3.png'</span><span class="p">,</span> <span class="s1">'Alt for img3'</span><span class="p">)
+);</span></code></pre>
 
         </section>
 
