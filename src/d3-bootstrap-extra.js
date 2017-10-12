@@ -11,23 +11,20 @@
 })(this, (function(bs, global) {
 var boxCnt = 0, fileCnt = 0, tabCnt = 0, carouselCnt=0;
 
-bs.p	= function(ptext) {
-	var text=ptext;
+bs.element	= function(e, ptext) {
+	var text=ptext, el=e;
 	function chart(s) { s.each(chart.init); return chart; }
 	chart.init	= function() { 
-		var root= d3.select(this).append('p').html(text);
+		var root= d3.select(this).append(el).html(text);
 		return chart;
 	};
 	return chart;
 }
+bs.p	= function(ptext) {
+	return bs.element('p',ptext);
+}
 bs.h3	= function(ptext) {
-	var text=ptext;
-	function chart(s) { s.each(chart.init); return chart; }
-	chart.init	= function() { 
-		var root= d3.select(this).append('h3').html(text);
-		return chart;
-	};
-	return chart;
+	return bs.element('h3',ptext);
 }
 bs.box	= function() {
 	var title, body, footer, cl="box-default", tools = [], id = "bsBox-"+(++boxCnt), root;
@@ -134,14 +131,20 @@ bs.row	= function() {
 	return chart;
 }
 bs.union= function() {
-	var cells = [];
+	var cells = [], root;
 	function chart(s) { s.each(chart.init); return chart; }
+	function draw() {
+		root.selectAll('span').data(cells).enter().append('span').each(function(d,i) {
+			d3.select(this).call(d);
+		});
+	}
 	chart.item	= function(c) {cells.push(c);return chart;}
 	chart.init	= function() { 
-		var r = d3.select(this)
-		cells.forEach(function(d) {r.append('span').call(d);});
+		root = d3.select(this);
+		draw();
 		return chart;
 	};
+	chart.update	= function() {root.html('');draw();return chart;};
 	return chart;
 }
 bs.pills= function() {
