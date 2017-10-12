@@ -160,7 +160,11 @@
 		var target = bs.api.find.target(this, 'modal'),
 		    backdrop,
 		    hide2 = function() {
-			backdrop.on(bs.api.transitionEvent, function() {backdrop.remove()}).classed("in", false);
+			target.on(bs.api.transitionEvent, function(){});
+			if (target.classed("fade")  && bs.api.transitionEvent != null)
+				backdrop.on(bs.api.transitionEvent, function() {backdrop.remove()}).classed("in", false);
+			else
+				backdrop.remove();
 			d3.select('body').classed('modal-open',false);
 			target.style('display', 'none');
 			trigger(target,'hidden.bs.modal');
@@ -171,6 +175,7 @@
 			else
 				hide2(target);
 		},  show = function() {
+			target.on(bs.api.transitionEvent, function(){});
 			target.style('display', 'block');
 			target.node().focus();
 			target.classed('in',true);
