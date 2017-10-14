@@ -522,9 +522,9 @@ bs.mdViewer = function() {
 			ret = ret.replace(/\*([^\*]*)\*/g,'<i>$1</i>');
 			ret = ret.replace(/\_([^\_]*)\_/g,'<i>$1</i>');
 			// TODO: Improve list management by a lot
-			if (/^\+ /.test(ret))		{type='ul';ret = ret.replace(/^\+ (.*)$/,'<li>$1</li>')}
-			if (/^\* /.test(ret))		{type='ul';ret = ret.replace(/^\* (.*)$/,'<li>$1</li>')}
-			if (/^\- /.test(ret))		{type='ul';ret = ret.replace(/^\- (.*)$/,'<li>$1</li>')}
+			if (/^\+ /.test(ret))		{type='ul';ret = ret.replace(/\+ (.*)/,'<li>$1</li>')}
+			if (/^\* /.test(ret))		{type='ul';ret = ret.replace(/\* (.*)/,'<li>$1</li>')}
+			if (/^\- /.test(ret))		{type='ul';ret = ret.replace(/- (.*)/,'<li>$1</li>')}
 			// final remplacement
 			if (/^###### /.test(ret))	{type='h6';ret = ret.replace(/^###### /,'')}
 			if (/^##### /.test(ret))	{type='h5';ret = ret.replace(/^##### /,'')}
