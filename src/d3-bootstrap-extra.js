@@ -42,7 +42,7 @@ bs.box	= function() {
 				}
 				var btn = d3.select(this).append('button').attr('type', 'button').attr('class','btn btn-box-tool');
 				if (typeof d.action != 'undefined' && d.action == 'collapse')
-					btn.attr('data-widget', d.action).attr('data-target','#'+id);
+					btn.attr('data-widget', d.action).attr('data-target','#'+id).on('click.bs.collapse.data-api',	bs.api.collapse.click);
 				else if (typeof d.action != 'undefined')
 					btn.attr('data-widget', d.action)
 				if (typeof d.icon != 'undefined')
