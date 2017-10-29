@@ -20,6 +20,20 @@ bs.element	= function(e, ptext) {
 	};
 	return chart;
 }
+bs.label	= function(ptext) {
+	var text=ptext, cl='label-default', ul='';
+	function chart(s) { s.each(chart.init); return chart; }
+	chart.class	= function(t) {if (arguments.length) {cl = t;return chart;} return cl;};
+	chart.url	= function(t) {if (arguments.length) {ul = t;return chart;} return ul;};
+	chart.init	= function() { 
+		var root= d3.select(this);
+		if(ul!='')
+			root = root.append('a').attr('href',ul);
+		root.append('span').attr('class', 'label '+cl).html(text);
+		return chart;
+	};
+	return chart;
+}
 bs.p	= function(ptext) {
 	return bs.element('p',ptext);
 }
@@ -27,13 +41,17 @@ bs.h3	= function(ptext) {
 	return bs.element('h3',ptext);
 }
 bs.box	= function() {
-	var title, body, footer, cl="box-default", tools = [], id = "bsBox-"+(++boxCnt), root;
+	var title, body, footer, cl="box-default", tools = [], id = "bsBox-"+(++boxCnt), root, icon;
 	function draw() {
 		var ttl;
-		if (typeof title != 'undefined') {
+		if (typeof title != 'undefined' || typeof icon != 'undefined' || tools.length>0)
 			ttl = root.append('div').attr('class', 'box-header with-border');
+		if (typeof icon == 'function')
+			ttl.append('span').attr('class', 'box-icon').call(icon);
+		else if (typeof icon != 'undefined')
+			ttl.append('span').attr('class', 'box-icon').append('img').attr('src',icon);
+		if (typeof title != 'undefined')
 			ttl.append('h3').attr('class', 'box-title').html(title);
-		}
 		if (tools.length>0 && typeof title != 'undefined') {
 			ttl.append('div').attr('class', 'box-tools pull-right').selectAll('button').data(tools).enter().each(function(d,i) {
 				if(typeof d == 'function') {
@@ -58,6 +76,7 @@ bs.box	= function() {
 	}
 	function chart(s) { s.each(chart.init); return chart; }
 	chart.title	= function(t) {if (arguments.length) {title = t;return chart;} return title;};
+	chart.icon	= function(t) {if (arguments.length) {icon = t;return chart;} return icon;};
 	chart.tool	= function(t) {tools.push(t);return chart;};
 	chart.class	= function(t) {if (arguments.length) {cl = t;return chart;} return cl;};
 	chart.body	= function(t) {if (arguments.length) {body = t;return chart;} return body;};
@@ -288,6 +307,8 @@ bs.descTable = function () {
 				x = x.append('a').attr('href', d.url)
 			if (typeof d.right == 'number')
 				x.html(bs.api.format.number(d.right))
+			else if (typeof d.right == 'function')
+				x.call(d.right)
 			else
 				x.html(d.right)
 		});
@@ -453,10 +474,16 @@ bs.button.toggle = function() {
 	chart.icon	= function(t) {icon = t;return chart;};
 	chart.text	= function(t) {text = t;return chart;};
 	chart.init	= function() {
-		var r = d3.select(this).append('a').attr('href','#').attr('class', 'btn '+cl).attr('data-toggle', toggle).attr('data-target', target)
+		var r = d3.select(this).append('a').attr('href','#').attr('class', 'btn '+cl).attr('data-toggle', toggle).attr('data-target', target);
 		if(typeof icon != 'undefined')
 			r.append('i').attr('aria-hidden','true').attr('class',icon)
 		r.append('span').text(' '+text)
+		switch (toggle) {
+		case 'modal':	r.on('click.bs.modal.data-api',		bs.api.modal.click);	break;
+		case 'dropdown':r.on('click.bs.dropdown.data-api',	bs.api.dropdown.click);	break;
+		case 'tab':	r.on('click.bs.tab.data-api',		bs.api.tab.click);	break;
+		case 'collapse':r.on('click.bs.collapse.data-api',	bs.api.collapse.click);	break;
+		}
 	}
 	return chart;
 }
