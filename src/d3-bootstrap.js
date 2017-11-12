@@ -294,6 +294,7 @@
 			parent = bs.api.find.dataParent(this)
 			active = target.classed('in'),
 			hide2  = function(t) {
+				t.on(bs.api.transitionEvent, function(){});
 				t.classed('collapsing',false).classed('collapse',true).style(dim, '');
 				trigger(target,'hidden.bs.collapse');
 			},
@@ -313,6 +314,7 @@
 				t.on(bs.api.transitionEvent, function() {hide2(t)}).style(dim, '1px') 
 			},
 			show2  = function() {
+				target.on(bs.api.transitionEvent, function(){});
 				target.classed('collapsing',false).classed('collapse',true).classed('in',true);
 				target.style(dim, '');
 				trigger(target,'shown.bs.collapse');
@@ -506,11 +508,11 @@
 		if(max.size()>0)
 			maxPos = max.node().offsetTop
 		maxPos -= h
-		d3.select(window).on('scroll.bs.affix.data-api', function() {bs.api.affix.scroll.call(that, window,minPos,maxPos,h)})
+		d3.select(window).on('scroll.bs.affix.data-api', function() {bs.api.affix.scroll.call(that, window,minPos,document.body.clientHeight,h)})
 		d3.select(window).on('click.affix.data-api', function() {
-			setTimeout(function() {bs.api.affix.scroll.call(that, window,minPos,maxPos,h)},5)
+			setTimeout(function() {bs.api.affix.scroll.call(that, window,minPos,document.body.clientHeight,h)},5)
 		})
-		bs.api.affix.scroll.call(that, window,minPos,maxPos,h)
+		bs.api.affix.scroll.call(that, window,minPos,document.body.clientHeight,h)
 	}
 	// scrollSpy
 	bs.api.scroll.linkClick	= function() {
