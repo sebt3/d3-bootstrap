@@ -10,6 +10,9 @@ dist/d3-bootstrap-all.js: $(ALL_SRC)
 	echo $(ALL_SRC)
 	@$(SHOW_COMPILE) $@
 	@cat $(ALL_SRC) > $@
+dist/d3-bootstrap-withextra.js: $(EXT_SRC)
+	@$(SHOW_COMPILE) $@
+	@cat $(EXT_SRC) > $@
 dist/d3-bootstrap-withextra.min.js: $(EXT_SRC)
 	@$(SHOW_COMPILE) $@
 	@$(JS_COMPILER) $(EXT_SRC) > $@
