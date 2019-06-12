@@ -1,9 +1,9 @@
 (function(global, factory) {
 	if (typeof global.d3 !== 'object' || typeof global.d3.version !== 'string')
-		throw new Error('Bootstrap\'s JavaScript requires d3v4');
+		throw new Error('Bootstrap\'s JavaScript requires d3v4 or d3v5');
 	var v = global.d3.version.split('.');
-	if (v[0] != '4')
-		throw new Error('Bootstrap\'s JavaScript requires d3v4');
+	if (v[0] != '4' && v[0] != '5')
+		throw new Error('Bootstrap\'s JavaScript requires d3v4 or d3v5');
 	if (typeof global.bs !== 'object' || typeof global.bs.version !== 'string')
 		throw new Error('Bootstrap-extra require d3-Bootstrap');
 	
